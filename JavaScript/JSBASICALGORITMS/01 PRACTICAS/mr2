@@ -1,0 +1,13 @@
+let character = "Legolas";
+let race = "Elfo";
+let hasRing = false;
+let isArcher = true;
+
+if (hasRing = true){
+console.log ("Legolas es el portador del Anillo Único");
+}else if(isArcher = true){
+    console.log ("Legolas es un arquero experto");
+}else{
+   console.log ("Legolas es un guerrero valiente");   
+}
+

@@ -1,0 +1,21 @@
+const alumno = {
+  name: "Barbara",
+  edad: 30,
+  ciudad: "Madrid",
+};
+alumno.name = "Lucia";
+console.log (alumno);
+alumno["name"] = "Ana";
+console.log (alumno);
+
+const keyArray = Object.keys(alumno);
+console.log(keyArray);
+
+const valueArray =Object.values(alumno);
+console.log(valueArray);
+
+const entriesArray = Object.entries(alumno);
+console.log (entriesArray);
+
+delete (alumno.ciudad);
+console.log (alumno);
