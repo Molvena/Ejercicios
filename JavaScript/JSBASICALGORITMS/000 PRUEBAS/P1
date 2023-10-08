@@ -1,3 +1,5 @@
+///Objects. Métodos y propiedades.
+
 const alumno = {
   name: "Barbara",
   edad: 30,
@@ -19,3 +21,34 @@ console.log (entriesArray);
 
 delete (alumno.ciudad);
 console.log (alumno);
+
+const dog1 = "Timbo";
+const dog2 = "Moka";
+
+console.log (`${dog1} y ${dog2} estan todo el dia durmiendo`);
+console.log ("Mis perros se llaman " + dog1 + " y " + dog2);
+
+///Strings. Métodos y propiedades.
+
+let mascotas = "Tengo dos perros y un gato";
+console.log(mascotas[3]);
+console.log(mascotas.charAt(3));
+
+console.log(mascotas.length);
+console.log(mascotas.includes("o"));
+console.log(mascotas.repeat(4));
+
+let fragmentoQuijote = "En -un -lugar- de -la- Mancha";
+let corrige = fragmentoQuijote.replaceAll("-","");
+console.log(corrige);
+
+console.log(corrige.slice(0,5));
+
+console.log(corrige.split(" "));
+
+console.log(corrige.toLowerCase());
+
+console.log(corrige.toUpperCase());
+console.log(mascotas.trim());
+
+
