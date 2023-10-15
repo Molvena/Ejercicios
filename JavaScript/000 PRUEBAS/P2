@@ -1,0 +1,131 @@
+const animales = [
+  "perro",
+  "gato",
+  "perro",
+  "periquito",
+  "pez",
+  "perro",
+  "gato",
+  "perro",
+  "periquito",
+  "pez",
+];
+
+// ------> funcion normal
+
+function buscar(list, palabraABuscar) {
+  const allIndex = [];
+  console.log("🚀 ~ file: app.js:147 ~ buscar ~ allIndex:", allIndex);
+  list.forEach((element, index) => {
+    // tenemos que compara que la palabra que queremos buscar coincide con la que estamos recorriendo
+    // si coincide vamos a pusear dentro del array la posicion en la que se encuentra
+
+    palabraABuscar == element && allIndex.push(index);
+  });
+  console.log("🚀 ~ file: app.js:147 ~ buscar ~ allIndex:", allIndex);
+}
+buscar(animales, "perro");
+
+const buscarArrow = (list, palabraABuscar) => {
+  const allIndex = [];
+  console.log("🚀 ~ file: app.js:147 ~ buscar ~ allIndex:", allIndex);
+  list.forEach((element, index) => {
+    // tenemos que compara que la palabra que queremos buscar coincide con la que estamos recorriendo
+    // si coincide vamos a pusear dentro del array la posicion en la que se encuentra
+
+    palabraABuscar == element && allIndex.push(index);
+  });
+  console.log("🚀 ~ file: app.js:147 ~ buscar ~ allIndex:", allIndex.length);
+};
+
+buscarArrow(animales, "gato");
+
+//todo------------- ejercicio quitar los repetidos ----------------------------
+
+const animalesRepetidos = [
+  "perro",
+  "gato",
+  "perro",
+  "periquito",
+  "pez",
+  "perro",
+  "gato",
+  "perro",
+  "periquito",
+  "pez",
+];
+
+const newArraySinRepetidos = [];
+
+animalesRepetidos.forEach(
+  (element, index) =>
+    !newArraySinRepetidos.includes(element) &&
+    newArraySinRepetidos.push(element)
+);
+
+console.log(
+  "🚀 ~ file: app.js:188 ~ newArraySinRepetido:",
+  newArraySinRepetidos
+);
+
+//todo-------- Ejercicio contar los elmentos de cada uno en singular- -----
+
+/// primero tenemos un arrray vacio que guarda la nformacion
+// segundo si ya tenemos contado un elemento no volvemos a contarlo
+
+const recuento = [];
+
+// ----> recuento es de esta forma: [{palabra: "perro", repeticiones: 34},{palabra: "pez", repeticiones: 3},...]
+
+animalesRepetidos.forEach((element, index) => {
+  /// doblr bucle porque 1_--> el primero se para en un elemento y el 2) segundo vuelve a recorrer el array para contar ese elemento que me he parado
+
+  // tenemls que evaluar si lo hemos contado o no dentro del array recuento
+  let acc = 0;
+  recuento.forEach((especie, index) => {
+    if (element == especie.palabra) acc++;
+  });
+  // si contador que es acc es igual a cero quiere decir que esa palabra no la he contado
+  // y si no la he ccontado me pongo a hacerlo
+  if (acc == 0) {
+    // ---> reincializo para volver a contar
+    acc = 0;
+
+    // la logica es que si el contador esta a cero entonces nos ponemos a contar con el segundo bucle del array de la lista original
+    animalesRepetidos.forEach((item, index) => {
+      /// si la palabra incial me pare en el primer bucle es igual a la palabra que estoy en el bucle ultimo
+      // incremento el contador--> la variable funcional
+      element == item && acc++;
+    });
+
+    recuento.push({ palabra: element, repeticiones: acc });
+  }
+});
+
+// sin comentarios------->
+
+const recuentoDos = [];
+
+animalesRepetidos.forEach((element, index) => {
+  let acc = 0;
+  recuento.forEach((especie, index) => {
+    if (element == especie.palabra) acc++;
+  });
+  if (acc == 0) {
+    acc = 0;
+    animalesRepetidos.forEach((item, index) => {
+      element == item && acc++;
+    });
+    recuentoDos.push({ palabra: element, repeticiones: acc });
+  }
+});
+
+/// teoria de arrays paralelos
+
+// -------> primero sacas un array con los elemetos sin repetir
+
+// -------> comparas ese array sin repetidos con el repetido
+
+for (i = 0; i < animalesRepetidos.length; i++) {
+  console.log(animalesRepetidos[i]);
+}

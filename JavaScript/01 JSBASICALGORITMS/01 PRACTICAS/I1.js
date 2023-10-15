@@ -131,3 +131,44 @@ for (let c =0; c<10; c++){
         console.log ("Dormido!");
     }
 }
+
+
+//Interaccion 6 bis
+
+for(let x=0; x<=9; x++){
+    console.log(x)
+}
+
+for (let y=0 ; y<=9; y++){
+    if (y%2 ===0){
+        console.log(y);
+    }
+}
+
+// Si quiero que me saque todos los pares mayor que 2
+//esto  a continuación me ha creado un bucle infinito
+
+//for (let y=0 ; 2<y<=9; y++){
+//   if (y%2 ===0){
+//      console.log(y);
+//  }
+//  }
+
+//Asi sí funciona
+
+for (let z=0 ; z<=9; z++){
+    if (z%2 ===0 && z>2){
+        console.log(z);
+    }  
+    }
+
+for (let h = 0; h<10; h++){
+    if (h < 9) {console.log("Intentando dormir");
+}else {console.log("Durmiendo");}
+}
+
+//con ternario
+
+for (let w = 0; w<10; w++){
+    w<9? console.log ("Intentando dormir"): console.log("durmiendo");
+}
