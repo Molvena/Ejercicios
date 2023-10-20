@@ -50,3 +50,14 @@ console.log(resultado3);
   console.log(resultado3);
   }
     contara(mixedElements);
+
+    //promedio:
+
+    const promedio = (array) => {
+      let resultado4 = 0;
+      for(let b=0; b<array.length; b++){
+        isNaN(b) == true? resultado4 += b.length: resultado4 += b;
+    }
+    console.log(resultado4/array.length);
+    }
+    promedio(mixedElements);
