@@ -1,0 +1,20 @@
+const placesToTravel = [
+    { id: 5, name: 'Japan' },
+    { id: 11, name: 'Venecia' },
+    { id: 23, name: 'Murcia' },
+    { id: 40, name: 'Santander' },
+    { id: 44, name: 'Filipinas' },
+    { id: 59, name: 'Madagascar' }
+];
+
+// Crear un nuevo array para almacenar los destinos filtrados
+const destinosFiltrados = [];
+
+for (let i = 0; i < placesToTravel.length; i++) {
+  const destino = placesToTravel[i];
+  if (destino.id !== 11 && destino.id !== 40) {
+    destinosFiltrados.push(destino);
+  }
+}
+
+console.log(destinosFiltrados);

@@ -25,11 +25,12 @@ const repeatCounter =(param) =>{
   
  param.forEach((item,index)=>{
   console.log(resultado); //esto es solo para ver como se va recorriendo el bucle. Es interesante
-  resultado.hasOwnProperty(item) ? resultado[item] += 1 :resultado[item] = 1});
+  resultado.hasOwnProperty(item) ? resultado[item] += 1:resultado[item] = 1});
   console.log("resultado final", resultado);
 }
 
 repeatCounter(counterWords);
 
-
+// .hasOwnProperty() es un método de los objetos 
+//los meto con resultado[item] porque es la forma de llamar al objeto.
 

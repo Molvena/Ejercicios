@@ -1,5 +1,7 @@
 //Iteración #2: Condicionales avanzados
 
+//este no me sale!!!!
+
 //Comprueba en cada uno de los usuarios que tenga al menos dos trimestres aprobados 
 //y añade la propiedad isApproved a true o false en consecuencia. 
 //Una vez lo tengas compruébalo con un console.log. 
