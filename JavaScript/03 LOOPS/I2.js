@@ -1,6 +1,6 @@
 //Iteración #2: Condicionales avanzados
 
-//este no me sale!!!!
+
 
 //Comprueba en cada uno de los usuarios que tenga al menos dos trimestres aprobados 
 //y añade la propiedad isApproved a true o false en consecuencia. 
@@ -15,31 +15,39 @@ const alumns = [
 ]
 
 
-alumns.forEach((alumns)=>{ //para que me añada una propiedad en cada objeto tengo que ponerle dentro el nombre de la matriz alumns, si no, me añade un objeto al final con isApproved
-alumns.isApproved = "";
+alumns.forEach((alumno)=>{ 
+alumno.isApproved = true;
 });
-console.log(alumns);
-
-//Hago un condicional para cada objeto del array (for) para que isApproved sea true con dos trimestres aprobados
-
-const evaluacion =[];
-for(let i= 0 ; i< alumns.length; i++) {
-    const trimestre = alumns[i];
-    if (trimestre.id === "false" >= 2){
-        isApproved ===false};
-}
-console.log(evaluacion);
 
 
-//alumns.forEach((item, index)=>{ 
- //alumns[item]===false >= 2 && isApproved ===false;   
-//});
-console.log(alumns);
 
-// HAGO UN FILTRO PRA QUE ME DEVUELVA SOLO EN LOS QUE isApproved sea true
-const aprobados = alumns.filter(alumno => alumno.isApproved === true);
+alumns.forEach((alumno,index) =>{
+    const aprobados =[];
+    const trimestresAprobados = [alumno.T1, alumno.T2, alumno.T3];//hago un arrayde arrays con los trimestres de cada alumno 
+    //console.log(trimestresAprobados);
+    //sale esto
+    //[ false, false, true ]
+    //[ true, false, true ]
+    //[ false, true, true ]
+    //[ false, false, false ]
+    //[ true, true, true ]
+    const conteo = trimestresAprobados.filter(trimestresAprobados=> !trimestresAprobados == false); //hago un filtro y saco un array con los falsos
+   //console.log(conteo)
+   ///Sale esto
+    //[ true ]
+    //[ true, true ]
+    //[ true, true ]
+    //[]
+    //[ true, true, true ]
 
-//console.log(aprobados);
+    if(conteo.length >= 2){      
+        aprobados.push(alumno);
+console.log(aprobados);
+    } 
+    });     
+       
+
+ 
 
 //Pista a la hora de recorrer un array y poder meter en el objeto una nueva propiedad
 //deberás asignar a ese array por indice una propiedad tal que así

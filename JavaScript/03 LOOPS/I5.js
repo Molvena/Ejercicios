@@ -13,11 +13,11 @@ const placesToTravel = [
 ];
 
 //bucle
-const placesToTravel2 =[];
-for(let n = 0; n < placesToTravel.length; n++) {  //ojo aqui se pone < No olvidar!!
-  const destino = placesToTravel[n];
-    if (destino.id !== 11 && destino.id !== 40){
-    placesToTravel2.push(destino);
+const placesToTravel2 =[];                        //esta es la nueva variable donde guardo los resultados
+for(let n = 0; n < placesToTravel.length; n++) {  //ojo aqui se pone < No olvidar!! con esto recorro cada elto del array
+  const destino = placesToTravel[n];              //Defino la variable destino que son cada objeto dentro del array
+    if (destino.id !== 11 && destino.id !== 40){  //pongo la condicion a destino que es cada objeto del array
+    placesToTravel2.push(destino);                 //mando a la nueva matris lo que cumple la condición 
 }
 }
 

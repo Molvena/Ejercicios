@@ -1,0 +1,35 @@
+<!-- La primera etiqueta nos indica el tipo de doc que tenemos: html -->
+<!DOCTYPE html>
+
+<!-- es la etiqueta principal donde tendremos todo nuestros html de nuestra app - el incial -->
+<html lang="en">
+  <!-- En las cabeceras tenemos las meta-->
+  <head>
+    <!-- ENCODIFICACION DE CARACTES QUE TENDRA EL NAVEGADOR AL RENDERIZAR LA APP-->
+    <meta charset="UTF-8" />
+    <!-- esta linea tiene que estar para que las medias queries  PARA HACER EL DISEÑO RESPONSIVE-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- title es lo que sale en la pestaña del navegador-->
+    <!-- para enlazar js poder script:module y dale a tabulacion-->
+    <!---->
+    <!--IMPORTANTE METERLE EL DEFER-->
+    <script type="module" src="./app.js" defer></script>
+
+    <!-- ENLAZAR EL CSS -LINK-->
+    <!-- link:css y le dais a tabulacion-->
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <!-- el body es donde esta alojado todo la info de nuestra aplicacion --LO QUE SE RENDERIZA-->
+  <body>
+    <div id="app">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit illum
+        harum, numquam iste autem adipisci tempore eveniet. Ipsam at nihil
+        itaque asperiores libero quam quaerat? Corporis rem maiores dolorem
+        esse?
+      </p>
+    </div>
+  </body>
+</html>

@@ -8,8 +8,7 @@
 //busca información sobre la función de javascript **Math.random()**
 
 const rollDice = (numCaras) =>{
-    return Math.floor(Math.random() *(numCaras -1 +1) + 1)  //el -1 y el +1 seran los minimos.Son formulas matematicas
-}
+    return Math.floor(Math.random() *(numCaras -1 +1) + 1)  //el -1 y el +1 seran los minimos.Son formulas matematicaspara que saque el rango
 
 const dado = rollDice(5);//no te puede dar mas de 5
 
