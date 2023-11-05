@@ -13,3 +13,13 @@ const videogames = [
     {name: 'Genshin Impact', genders: ['RPG', 'Aventura'], score: 7.5},
     {name: 'Legend of Zelda: Breath of the wild', genders: ['RPG', 'La cosa más puto bonita que he visto nunca'], score: 10},
 ]
+
+
+const rpg = videogames.filter(game => game.genders.includes("RPG"));
+
+//console.log("🚀 ~ file: I8.js:20 ~ rpg:", rpg)
+
+const media = rpg.reduce((acc,game)=> acc+game.score,0)/rpg.length;
+
+
+console.log("🚀 ~ file: I8.js:25 ~ media:", media);

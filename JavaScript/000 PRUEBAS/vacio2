@@ -1,0 +1,31 @@
+const animalesRepetidos = [
+    "perro",
+    "gato",
+    "perro",
+    "periquito",
+    "pez",
+    "perro",
+    "gato",
+    "perro",
+    "periquito",
+    "pez",
+  ];
+  
+  const recuento = [];
+  
+  animalesRepetidos.forEach((element, index) => {
+    let acc = 0;
+    recuento.forEach((especie, index) => {
+      if (element == especie.palabra) acc++;
+    });
+    if (acc == 0) {
+      acc = 0;
+      animalesRepetidos.forEach((item, index) => {
+        element == item && acc++;
+      });
+      recuento.push({ palabra: element, repeticiones: acc });
+    }
+  });
+  
+  
+  console.log(recuento);

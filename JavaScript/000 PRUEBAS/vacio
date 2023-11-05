@@ -1,19 +1,80 @@
-//**teración #5: Función rollDice**
+//Iteración #3: Mix Fors
+//Dado el siguiente javascript usa forof y forin para saber cuantas veces 
+//ha sido cada sonido agregado por los usuarios a favorito.
+// Para ello recorre la lista de usuarios y usa forin 
+//para recoger el nombre de los sonidos que el usuario tenga como favoritos.
+//Una vez accedas a ellos piensa en la mejor forma de hacer un conteo 
+//de cada vez que ese sonido se repita como favorito en cada usuario.
 
-//Crea una función llamada **rollDice()** que reciba como parametro
-// el numero de caras que queramos que tenga el dado que deberá simular
-// el codigo dentro de la función. Como hemos dicho, que la función use 
-//el parametro para simular una tirada de dado y retornar el resultado. 
-//Si no se te ocurre como hacer un numero aleatorio no te preocupes! 
-//busca información sobre la función de javascript **Math.random()**
+//Este ejercicio es un poco complicado con los conocimientos actuales pero...
+//a la vez un buen reto y oportunidad para comprender que hay muchas formas de hacer las cosas en javascript.
 
-const rollDice = (numCaras) =>{
-    return Math.floor(Math.random() *(numCaras -1 +1) + 1)  //el -1 y el +1 seran los minimos.Son formulas matematicas
-}
+const users = [
+  {name: 'Manolo el del bombo',
+      favoritesSounds: {
+          waves: {format: 'mp3', volume: 50},
+          rain: {format: 'ogg', volume: 60},
+          firecamp: {format: 'mp3', volume: 80},
+      }
+  },
+  {name: 'Mortadelo',
+      favoritesSounds: {
+          waves: {format: 'mp3', volume: 30},
+          shower: {format: 'ogg', volume: 55},
+          train: {format: 'mp3', volume: 60},
+      }
+  },
+  {name: 'Super Lopez',
+      favoritesSounds: {
+          shower: {format: 'mp3', volume: 50},
+          train: {format: 'ogg', volume: 60},
+          firecamp: {format: 'mp3', volume: 80},
+      }
+  },
+  {name: 'El culebra',
+      favoritesSounds: {
+          waves: {format: 'mp3', volume: 67},
+          wind: {format: 'ogg', volume: 35},
+          firecamp: {format: 'mp3', volume: 60},
+      }
+  },
+]
 
-const dado = rollDice(5);//no te puede dar mas de 5
 
-console.log(dado);
+const favoritos = [];
+
+users.forEach((user,index)=>{
+const {favoritesSounds} = user;
+
+for (let sound in favoritesSounds)  {
+  favoritos.push(sound);
+}});
+
+//console.log(favoritos);
+//[
+  //'waves',    'rain',
+  //'firecamp', 'waves',
+  //'shower',   'train',
+  //'shower',   'train',
+  //'firecamp', 'waves',
+  //'wind',     'firecamp'
+//]
 
 
-//te da un resultado aleatorio
+const resultado =[];
+
+for(let sonido of favoritos){
+  let acc = 0;
+  resultado.forEach((sonidoContado, index){  
+    sonidoContado.sonido == element
+    acc++)
+    if(acc==0){
+    favoritos.forEach((element,index)=>
+    element == tipo && acc++
+)}};
+  resultado.push({sonido:element, repeciciones:acc});
+
+  });
+
+
+console.log(resultado);

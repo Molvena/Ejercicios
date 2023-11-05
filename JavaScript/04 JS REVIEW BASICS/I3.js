@@ -56,22 +56,118 @@ for(let sonido in favoritesSounds){
 };
 //console.log(favoritos);
 
-const resultado =[];
+//[
+ //  'waves',    'rain',
+ //  'firecamp', 'waves',
+ //  'shower',   'train',
+ //  'shower',   'train',
+ //  'firecamp', 'waves',
+ //  'wind',     'firecamp'
+ // ]
 
-favoritos.forEach((sonido, index)=>{
-    let acc =0;
-//console.log(favoritos);
-resultado.forEach((especie,index)=>{
-    if(sonido == especie.sound)acc++;
-    });
-if (acc == 0) {
-    acc = 0;
-favoritos.forEach((item,index) =>{
-    sonido ==item && acc++;
-});
-}
+
+const resultado =[]; // Va a tener este formato {sound: sonido, repeticiones: acc}
+
+for(let sonido of favoritos) { //estos son los sonidos del array favoritos , les hago un bucle
+    let acc =0; //declaro el contador a cero
+
+resultado.forEach((sonidoContado,index)=>{ //este es un bucle del resultado, voy a comparar un array con el otro
+    sonidoContado.sound == sonido  && acc++ //cojo el primer sonido de favoritos  si ya tengo ese sonido en resultado
+    })                                      // (sonidoContado es cada objeto del array resultado, el sonido seria sonidoContado.sound), 
+                                            //le sumo uno y acabo.Y voy a por el segundo sonido (firecamp) 
+                                          //Si no está, me cumple la siguiente condicion (contador a cero) y entonces lo cuento
+                                            //El primer bucle me opera si  esta contado, pero si no, no hace nada. estoy parado.
+
+                                           // { sound: 'waves', repeticiones: 0 },
+                                            //{ sound: 'rain', repeticiones: 0 },
+                                            //{ sound: 'firecamp', repeticiones: 0 },
+                                            //{ sound: 'waves', repeticiones: 1 },
+                                            //{ sound: 'shower', repeticiones: 0 },
+                                           //{ sound: 'train', repeticiones: 0 },
+                                            //{ sound: 'shower', repeticiones: 1 },
+                                            //{ sound: 'train', repeticiones: 1 },
+                                            //{ sound: 'firecamp', repeticiones: 1 },
+                                            //{ sound: 'waves', repeticiones: 2 },
+                                            //{ sound: 'wind', repeticiones: 0 },
+                                            //{ sound: 'firecamp', repeticiones: 2 }
+
+
+
+
+
+    if (acc == 0){                             
+        for(let elementoNoContado of favoritos){   //Para ponerme a contar de nuevo, tengo que hacer otro bucle, recorro el array favoritos de nuevo para poder contarlo 
+     sonido ==elementoNoContado && acc++;           //y le digo que me iguale el nombre y me lo ponga en 1.
+};
+
 resultado.push({sound: sonido, repeticiones: acc});
-})
+}};
     
     
 console.log(resultado);
+
+//Ahora con un solo bucle
+
+const users2 = [
+    {name: 'Manolo el del bombo',
+        favoritesSounds: {
+            waves: {format: 'mp3', volume: 50},
+            rain: {format: 'ogg', volume: 60},
+            firecamp: {format: 'mp3', volume: 80},
+        }
+    },
+    {name: 'Mortadelo',
+        favoritesSounds: {
+            waves: {format: 'mp3', volume: 30},
+            shower: {format: 'ogg', volume: 55},
+            train: {format: 'mp3', volume: 60},
+        }
+    },
+    {name: 'Super Lopez',
+        favoritesSounds: {
+            shower: {format: 'mp3', volume: 50},
+            train: {format: 'ogg', volume: 60},
+            firecamp: {format: 'mp3', volume: 80},
+        }
+    },
+    {name: 'El culebra',
+        favoritesSounds: {
+            waves: {format: 'mp3', volume: 67},
+            wind: {format: 'ogg', volume: 35},
+            firecamp: {format: 'mp3', volume: 60},
+        }
+    },
+]
+
+
+const allSounds = []; //tendra la estructura {name: clave, repeticiones: acc}
+
+let acc = 0;
+
+for (let usuario of users2){                           //recorro cada objeto del primer array(users2)
+    for(let clave in usuario.favoritesSounds){         //dentro de cada objeto recorro las claves del favoritesSound (for in)
+        let accRepeticionesContado = 0;                //pongo el contador a cero de los repetidos
+        allSounds.forEach((elementoContado,index)=>{   //recorro el array resultados  (allsounds) con forEach para aplicarle una accion
+            clave === elementoContado.name && accRepeticionesContado ++
+        });                 
+          if(accRepeticionesContado == 0){
+            acc = 0;
+            for (let usuarioContar of users2){
+                for(claveContar in usuarioContar.favoritesSounds){
+                    clave === claveContar && acc++
+                }
+            }
+            allSounds.push({name:clave, repeticiones:acc});
+          }
+
+
+          
+
+    }
+}
+
+
+
+//console.log("🚀 ~ file: I3.js:142 ~ allSounds:", allSounds);
+
+

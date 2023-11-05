@@ -4,7 +4,7 @@
 const ages1 = [22, 14, 24, 55, 65, 21, 12, 13, 90];
 
 const mayoresEdad = ages1.filter(edad=>edad>18);
-console.log("🚀 ~ file: i5.js:7 ~ mayoresEdad:", mayoresEdad);
+//console.log("🚀 ~ file: i5.js:7 ~ mayoresEdad:", mayoresEdad);
 
 
 
@@ -14,7 +14,7 @@ console.log("🚀 ~ file: i5.js:7 ~ mayoresEdad:", mayoresEdad);
 const ages2 = [22, 14, 24, 55, 65, 21, 12, 13, 90];
 
 const pares =ages2.filter(edad=>edad % 2 == 0);
-console.log("🚀 ~ file: i5.js:17 ~ pares:", pares);
+//console.log("🚀 ~ file: i5.js:17 ~ pares:", pares);
 
 
 //5.3 Dado el siguiente array, utiliza .filter() para generar un nuevo array 
@@ -29,7 +29,7 @@ const streamers1 = [
 
 
     const lol =streamers1.filter(streamer=>streamer.gameMorePlayed ==='League of Legends');
-    console.log(lol);
+    //console.log(lol);
     
 
 
@@ -46,7 +46,7 @@ const streamers2 = [
 
 
 const conU = streamers2.filter(streamer=>streamer.name.includes("u"));
-console.log("🚀 ~ file: i5.js:49 ~ conU:", conU);
+//console.log("🚀 ~ file: i5.js:49 ~ conU:", conU);
 
 
 
@@ -57,8 +57,9 @@ console.log("🚀 ~ file: i5.js:49 ~ conU:", conU);
 //.age sea mayor que 35.
 
 
-const legends = streamers2.filter(streamer=>streamer.gameMorePlayed.includes("Legends"));
-//console.log("🚀 ~ file: i5.js:61 ~ legends:", legends)
+const legends = streamers2.filter(streamer=>{
+  return streamer.gameMorePlayed.includes("Legends")}); //le tengo que poner el reyurn para que me devuelva un nuevo array
+console.log("🚀 ~ file: i5.js:61 ~ legends:", legends)
 
 const uper =legends.map(streamer=>{
     if(streamer.age>35){
@@ -68,9 +69,6 @@ const uper =legends.map(streamer=>{
      }});
 
 console.log(uper);
-
-
-
 
 
 //5.6 Dado el siguiente html y javascript, utiliza .filter() para mostrar por consola 

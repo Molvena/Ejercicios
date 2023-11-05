@@ -16,7 +16,22 @@ const exams = [
     {name: 'Keanu Reeves', score: 10}
 ];
 
+const suma = exams.reduce((acc,alumno) => acc+alumno.score,0);
+console.log("🚀 ~ file: I7.js:20 ~ suma:", suma);
+
+
 //7.2 Dado el mismo array, haz una suma de todos las notas de los examenes de los 
-//alumnos que esten aprobados usando la función .reduce().
+//alumnos que esten aprobados usando la función .reduce()
+
+const aprobados = exams.reduce((acc, alumno) => 
+alumno.score >= 5? acc +alumno.score:null);
+
+console.log("🚀 ~ file: I7.js:30 ~ aprobados:", aprobados);
 
 //7.3 Dado el mismo array, haz la media de las notas de todos los examenes .reduce().
+
+//El reduce me vale el de antes que es el de la suma
+
+const media = suma/exams.length;
+
+console.log("🚀 ~ file: I7.js:38 ~ media:", media);
