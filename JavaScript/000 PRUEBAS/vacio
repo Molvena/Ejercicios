@@ -65,16 +65,18 @@ const resultado =[];
 
 for(let sonido of favoritos){
   let acc = 0;
-  resultado.forEach((sonidoContado, index){  
-    sonidoContado.sonido == element
-    acc++)
-    if(acc==0){
-    favoritos.forEach((element,index)=>
-    element == tipo && acc++
-)}};
-  resultado.push({sonido:element, repeciciones:acc});
+     resultado.forEach((sonidoContado, index)=>{  
+     sonidoContado.sound == sonido && acc++});
 
-  });
+     if(acc==0){
+      favoritos.forEach((element,index)=>{
+      sonido === element && acc++}
+      
+ )};
+ resultado.push({sound:sonido, repeciciones:acc}); 
+  
+
+  };
 
 
 console.log(resultado);

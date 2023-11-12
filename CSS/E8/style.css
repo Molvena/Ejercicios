@@ -1,0 +1,26 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+  }
+
+  div{
+    background-color:#e74c3c;
+    display:flex;
+    justify-content: center;
+  }
+
+  p{
+    background-color: #9b59b6;
+  }
+
+  span{
+    background-color:#3498db;
+
+  }
+
+  a{
+    background-color:#2ecc71;
+
+  }

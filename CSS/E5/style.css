@@ -1,0 +1,39 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .one {
+    background: pink;
+    border: 3px solid black;
+    /* CAMBIAR */
+    padding: 32px;
+    margin-bottom: 12px;
+    text-align: center;
+    
+  }
+  
+  .two {
+    background: lightblue;
+    border: 3px solid black;
+    /* CAMBIAR */
+    padding:8px;
+    margin:0px -30px 48px;
+
+  }
+  
+  .three {
+    background: peachpuff;
+    border: 3px solid black;
+    width: 200px;
+    /* CAMBIAR */
+    padding: 32px;
+    margin-left: 400px;
+    text-align: center;
+  }

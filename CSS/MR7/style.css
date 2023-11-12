@@ -1,0 +1,17 @@
+
+p{
+  font-family:Bergdool,open sans, vegur, verdana;
+}
+
+
+@font-face {
+    font-family: 'Bergdool';
+    src: 
+              local("Bergdool"),
+              url("./assets/Bergdool.ttf") format("truetype"),
+          
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
