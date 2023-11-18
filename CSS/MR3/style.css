@@ -5,15 +5,16 @@
 }
 
 body{
-    background:lightcyan;
+    background-color:lightcyan;
 }
 main{
     padding-top:1rem;
     padding-left:1rem;
-    colortext:black;
+    color:black;
 }
 li{
     padding-left:2rem;
+    list-style-type:none;
 }
 .like{
     color:green;

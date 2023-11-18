@@ -1,4 +1,9 @@
-section p{
++{
+    margin: 0;
+    padding:0,
+    box-sizing: border-box;
+}
+section>p{
     color:grey;
     font-style:italic;
 }

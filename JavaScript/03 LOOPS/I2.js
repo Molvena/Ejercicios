@@ -31,7 +31,7 @@ alumns.forEach((alumno,index) =>{
     //[ false, true, true ]
     //[ false, false, false ]
     //[ true, true, true ]
-    const conteo = trimestresAprobados.filter(trimestresAprobados=> !trimestresAprobados == false); //hago un filtro y saco un array con los falsos
+    const conteo = trimestresAprobados.filter(aprobado=> !aprobado == false); //hago un filtro y saco un array con los falsos
    //console.log(conteo)
    ///Sale esto
     //[ true ]
