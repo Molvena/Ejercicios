@@ -5,22 +5,41 @@
     
   }
 
+
+
   div{
+    heigth: 40px;
+    weigth:150px;
+    margin:150px;
+    padding:10px;
     background-color:#e74c3c;
-    display:flex;
-    justify-content: center;
+    display:inline;
+    
   }
 
   p{
+    heigth: 40px;
+    weigth:150px;
+    margin:150px;
+    padding:10px;
     background-color: #9b59b6;
+    display:inline;
   }
 
   span{
+    heigth: 40px;
+    weigth:150px;
+    margin:150px;
+    padding:10px;
     background-color:#3498db;
-
+    display:inline;
   }
 
   a{
+    heigth: 40px;
+    weigth:150px;
+    margin:150px;
+    padding:10px;
     background-color:#2ecc71;
-
+    display:inline;
   }

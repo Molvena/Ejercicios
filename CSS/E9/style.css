@@ -1,0 +1,31 @@
+#transition-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+button {
+  border-radius: 8px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-size: 18px;
+  padding: 16px 24px;
+  text-align: center;
+  
+}
+button:hover{
+animation:escalar 0.6s infinite;
+}
+
+@keyframes escalar{
+    0%{
+        scale:1;
+    }
+    50%{
+        scale:1.5;
+    }
+    100%{
+        scale:1;
+}

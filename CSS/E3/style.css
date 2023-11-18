@@ -1,15 +1,23 @@
 
 
+* {
+    font-family: 'Kalam', cursive;
+  }
+
 h1{
     color:#c92a2a;
+    font-size: 80px;
 }
 
 h2{
     color:#a61e4d;
+    font-size: 60px;
 }
 
 .first, .second{
     color:#364fc7;
-    
 }
 
+.second{
+    border-bottom:1px solid #c92a2a;
+}
