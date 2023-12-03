@@ -10,12 +10,13 @@ const streamers = [
 ];
 
 
-const streamer = ()=>{
+const listeners = ()=>{
 const input = document.querySelector("#input");
 input.addEventListener("input",(event)=>{
-  console.log(event.target.value);
-}
+	const filterData =  streamers.filter((item)=>
+	item.name.includes(event.target.value));
+	console.log(filterData);
+})
+};
 
-)
-
-}
+listeners()
