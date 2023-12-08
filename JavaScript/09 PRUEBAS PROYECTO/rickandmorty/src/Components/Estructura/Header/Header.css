@@ -1,0 +1,9 @@
+header{
+    height:20vh;
+    display: flex;
+    align-item: center;
+    justify-content: center;
+    background-color: #ffff0048;;
+    padding: 1rem;
+    font-family: Geneva, Verdana, arial;
+}

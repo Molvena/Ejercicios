@@ -1,0 +1,9 @@
+main{
+    height:70vh;
+    display: flex;
+    align-item: center;
+    justify-content: center;
+    background-color: #0004ff21;
+    padding: 1rem;
+    font-family: Geneva, Verdana, arial;
+}
