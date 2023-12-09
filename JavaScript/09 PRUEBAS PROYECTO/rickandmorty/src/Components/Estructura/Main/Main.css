@@ -1,5 +1,5 @@
 main{
-    height:70vh;
+    min-height:70vh;
     display: flex;
     align-item: center;
     justify-content: center;

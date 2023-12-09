@@ -3,7 +3,7 @@ import { PrintNav } from "../../Nav/Nav";
 
 
 const template = `
-<header> Soy el Header 😃</header>
+<header> Rick and Morty </header>
 `
 export const PrintHeader = () => {
    (document.querySelector("#app").innerHTML += template);

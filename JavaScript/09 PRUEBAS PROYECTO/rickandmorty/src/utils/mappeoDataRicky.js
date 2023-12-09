@@ -17,6 +17,6 @@ export const mappeoData = async ()=>{
 //que es una parte de la API, puede llamarse de otra forma, hay que mirarlo
 //Estos datos los guardare en una funcion mappeoData
 //que me exportare a la pagina en la que los quiero pintar, es decir en la HOME en este caso
-//Pero como antes quiero configurar unas cartas con un formato determinado
-//me las voy a llevar a Figure 
-//y de alli las llevare a la pagina
+//Como antes quiero configurar unas cartas con un formato determinado
+//me voy al archivo Figure y alli creare la funcion 
+//y después me ire al home e importare mappeoData y PrintFigureRicky 

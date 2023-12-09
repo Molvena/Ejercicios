@@ -13,6 +13,6 @@ export const PrintFigureRicky = (name, image) =>
     name
   ));
 
-
-  //ESte template lo voy a inyectar en el contenedor de la pagina Home
-  //en el que voy a definir una seccion <div>  con id containerHomePage
+//console.log(PrintFigureRicky);
+  //Este template lo voy a inyectar en el contenedor de la pagina Home
+  //en el que voy a definir una seccion <div> con id containerHomePage

@@ -1,9 +1,16 @@
-header{
-    height:20vh;
+
+header {
+    height: 20vh;
+    width:100vw;
     display: flex;
-    align-item: center;
     justify-content: center;
-    background-color: #ffff0048;;
+    background-color: #00ffd5ff;
     padding: 1rem;
     font-family: Geneva, Verdana, arial;
+    font-size: 2rem;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: space-around;
+    align-items: center;
+    position:fixed;
 }
