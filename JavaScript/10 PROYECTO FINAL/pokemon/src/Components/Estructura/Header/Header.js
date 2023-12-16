@@ -4,7 +4,7 @@ import { PrintNav } from "../../Nav/Nav";
 const template = `
 <header> Proyecto Elena </header>
 `
-export const PrintHeader = () => {
+export const PrintTemplateHeader = () => {
    (document.querySelector("#app").innerHTML += template);
    PrintNav();
 }

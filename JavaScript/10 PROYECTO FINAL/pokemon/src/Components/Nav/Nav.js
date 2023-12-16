@@ -3,7 +3,7 @@ import { printHomePage } from "../../pages/Home/Home";
 import { printPokePage } from "../../pages/Pokemons/Pokemons"; 
 const template = () =>`
 <nav>
-<button id="navegateHome" class="btnNav">Home</button>
+<button id="navegateHome" class="btnNav">🏠</button>
 <button id="navegatePokemons" class="btnNav">Pokemon</button>
 <button id="navegateTopo" class="btnNav">Topo</button>
 <button id="navegateAhorcado" class="btnNav">Ahorcado</button>
@@ -22,7 +22,7 @@ export const Listener = () => {
       const topo = document.getElementById("navegateTopo");
       topo.addEventListener("click", ()=> {
         console.log("Topo");
-        //printTopoPage();
+        //PrintTopoPage();
       });
       
       const ahorcado = document.getElementById("navegateAhorcado");
@@ -32,8 +32,7 @@ export const Listener = () => {
       });
       const poke = document.getElementById("navegatePokemons");
       poke.addEventListener("click", () => {
-        console.log("Poke");
-        printPokePage();
+       printPokePage();
       });
        
     };

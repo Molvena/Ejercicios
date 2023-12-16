@@ -5,5 +5,5 @@ const template = () =>`
 <main></main>
 `
 
-export const PrintMain = () =>
+export const PrintTemplateMain = () =>
 (document.getElementById("app").innerHTML += template());
