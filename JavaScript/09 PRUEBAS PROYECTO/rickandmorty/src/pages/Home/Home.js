@@ -20,7 +20,7 @@
 
     
  //!Segunda parte del ejercicio   
-import "./Rick.css"
+import "./Home.css"
 import { PrintFigureRicky } from "../../Components/Figure/Figure";
 import { mappeoData } from "../../utils/mappeoDataRicky";
 

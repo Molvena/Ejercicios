@@ -90,16 +90,20 @@ const template5 = ()=>`
 body4.innerHTML += template5();
 //console.log(paises2);
 
-const eliminarUltimo = () => {
-   
-    if (paises2.length > 0) {
-         const ultimoPais = paises2[paises2.length - 1];
+
+
+const boton5 = document.querySelector(".borraUlt");
+boton5.addEventListener("click", eliminarUltimo = () => {
+       if (countries2.length > 0) {
+         const ultimoPais = countries2[countries2.length - 1];
+         console.log(ultimoPais);
          ultimoPais.remove();
-}};
+}
 
- const boton5 = document.querySelector(".borraUlt");
+});
 
-boton5.addEventListener("click", eliminarUltimo())
+
+
 
 
 
@@ -117,5 +121,3 @@ countries2.forEach((item,index)=>{
      body5.innerHTML += template6();
 });
 
- //const eliminardiv = document.querySelector(".borra");
-    //eliminardiv.remove()

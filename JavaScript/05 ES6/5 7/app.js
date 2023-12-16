@@ -12,3 +12,21 @@ const streamers = [
 	{name: 'AuronPlay', age: 33, gameMorePlayed: 'Among Us'}
 ];
 
+const listeners = ()=>{
+	const input = document.querySelector("#input");
+	input.addEventListener("input",(event)=>{
+		const filterData =  streamers.filter((item)=>
+		item.name.includes(event.target.value));
+		//console.log(filterData);
+		const button =document.querySelector("button");
+		const handleClick = () => {console.log(filterData);};
+		button.addEventListener("click", handleClick);
+	})
+
+	
+	};
+	
+	listeners()
+
+
+	//el target es donde se encuentran los valores y mas datos

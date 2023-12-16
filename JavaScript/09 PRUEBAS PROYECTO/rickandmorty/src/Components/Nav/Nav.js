@@ -1,5 +1,5 @@
 import "./Nav.css";
-import { printHomePage } from "../../pages/Rick/Rick";
+import { printHomePage } from "../../pages/Home/Home";
 import { PrintBusquedaPage } from "../../pages/Busqueda/Busqueda";
 
 //!defino el template
