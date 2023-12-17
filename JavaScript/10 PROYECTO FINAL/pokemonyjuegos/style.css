@@ -1,0 +1,27 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  #app,
+  html {
+    width: 100vw;
+    min-height: 100vh;
+  }
+  
+  header {
+    height: 20vh;
+    width: 100vw;
+    position: fixed;
+  }
+  
+  main {
+    min-height: 90vh;
+    padding-top: 20vh;
+  }
+  
+  footer {
+    height: 10vh;
+  }
+  

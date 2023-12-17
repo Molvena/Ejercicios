@@ -1,5 +1,5 @@
 {
-  "name": "pokemon",
+  "name": "pokemonyjuegos",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "vite": "^5.0.8"
   },
   "dependencies": {
     "axios": "^1.6.2"
