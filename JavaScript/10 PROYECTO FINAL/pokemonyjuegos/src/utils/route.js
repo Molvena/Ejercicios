@@ -1,4 +1,4 @@
-import {  PrintDashboard, PrintLogin, PrintPokemonPage } from "../pages/index";
+import {  PrintDashboard, PrintLogin, PrintPokemonPage, PrintTemplateTresEnRaya } from "../pages/index";
 
 export const initControler = (paginaQueVamosAPintar) => {
   switch (paginaQueVamosAPintar) {
@@ -17,13 +17,10 @@ export const initControler = (paginaQueVamosAPintar) => {
       PrintDashboard();
      break;
 
-    case "Topo":
-      //la funcion qur pinta la pagina PrintPageTopo()
+     case "TresEnRaya":
+      PrintTemplateTresEnRaya();
      break;
-   case "Memory":
-     // la funcion qur pinta la pagina PrintPageMemoryGame()
-     break;
-
+ 
     default:
       break;
   }

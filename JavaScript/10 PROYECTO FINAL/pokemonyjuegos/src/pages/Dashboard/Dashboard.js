@@ -29,7 +29,12 @@ const template = () => `
 const listeners = () => {
   const botonPokemon = document.getElementById("navigatePokemon");
   botonPokemon.addEventListener("click", ()=>{
-  initControler("Pokemon")})
+  initControler("Pokemon")});
+
+  const botonJuego = document.getElementById("juegos");
+  botonJuego.addEventListener("click", ()=>{
+  initControler("TresEnRaya")});
+
 };
 
 export const PrintDashboard = () => {
