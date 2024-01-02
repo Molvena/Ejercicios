@@ -1,0 +1,51 @@
+#containerDashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    
+  
+    & img {
+      
+      border-radius: 50%
+    }
+      
+
+
+    & #navigatePokemon{
+      background-color: var(--colorDos);
+    
+    }
+
+    & #juegos{
+      background-color:white;
+    }
+
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      list-style: none;
+      gap: 2rem;
+      margin: 2rem 0 2rem 0;
+      
+      & li figure {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        color: var(--colorUno);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem;
+        box-shadow: 0px 8px 30px -3px rgba(0, 0, 0, 0.61);
+      
+      
+        
+      }
+    }
+  }
+  

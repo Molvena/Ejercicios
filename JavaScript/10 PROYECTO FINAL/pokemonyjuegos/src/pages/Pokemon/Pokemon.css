@@ -1,0 +1,30 @@
+#galleryPokemon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 0 0 20vh 0;
+  }
+
+  #containerFilter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--fondoClaro);
+    @media(max-width: 600px) {
+      flex-direction: column;
+      
+    }
+   
+  }
+
+  #inputPokemon{
+    width: 200px;
+    margin: 1rem 1rem 1rem 1rem;
+    padding: 0.3rem;
+    background: var(--fondo);
+    color: var(--colorUno)
+   
+  }

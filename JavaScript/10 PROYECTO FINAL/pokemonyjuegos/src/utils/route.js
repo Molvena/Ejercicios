@@ -1,4 +1,4 @@
-import {  PrintLogin } from "../pages";
+import {  PrintDashboard, PrintLogin, PrintPokemonPage } from "../pages/index";
 
 export const initControler = (paginaQueVamosAPintar) => {
   switch (paginaQueVamosAPintar) {
@@ -7,13 +7,14 @@ export const initControler = (paginaQueVamosAPintar) => {
     // y si no, pinto la pagina de login
     //los case se refieren a la pagina que vamos a pintar que serian Pokemon. Dashboard...
     case undefined:
-      localStorage.getItem("user") ? console.log("Dashboard") : PrintLogin();
+      localStorage.getItem("user") ? PrintDashboard() : PrintLogin();
+      break;
     case "Pokemon":
-     // la funcion qur pinta la pagina PrintPagePokemon()
+        PrintPokemonPage();
      break;
 
      case "Dashboard":
-      //la funcion qur pinta la pagina PrintPageDash()
+      PrintDashboard();
      break;
 
     case "Topo":

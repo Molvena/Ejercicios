@@ -1,6 +1,7 @@
 
 import "./Header.css";
 import { changeColorRGB } from "../../utils/changeColor";
+import { initControler } from "../../utils/route";
 
 const template = () => `
   <img
@@ -10,12 +11,12 @@ const template = () => `
   />
   <nav>
     <img
-      src="https://res.cloudinary.com/dq186ej4c/image/upload/v1682684561/changeColor_tat29q.png"
+      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1703957106/ilustracion-vector-rueda-fortuna-realista-multicolor_79145-1229_xmsfuo.avif"
       alt=" change to style mode page"
       id="changeColor"
     />
     <img
-      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1702818672/download_p80n1d.png"
+      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1702920355/images_k7wfea.png"
       alt=" navigate to home app"
       id="buttonDashboard"
     />
@@ -38,8 +39,24 @@ const listeners = () => {
     //esto es una forma de apuntar al color de fondo del body
     //Se puede apuntar asi porque es el body y no hace falta hacerlo con un querySelector
   });
+    //Ahora hago el escuchador del boton del Dashboard
+    const buttonDashboard = document.getElementById("buttonDashboard");
+    buttonDashboard.addEventListener("click", () => {
+      initControler("Dashboard");
+      //El evento me lleva al archivo route en el que tengo el initControler
+      //Y le meto que ejecute el caso Dashboard en el que tendre el printDashboard
+  });
+    //Ahora hago el escuchador del boton del Logout
+    const buttonLogout =document.getElementById("buttonLogout");
+    buttonLogout.addEventListener ("click", () => {
+      localStorage.removeItem("user");
+      initControler();
+      //Lo que me hace estar logado es que el user esta en el localStorage
+      //por lo que para salir tengo que borrarlo
+      //Y luego de nuevo llamo al initControler para que se vaya al caso undefinned
+      //Y me muestre el login de nuevo
+    })
 };
-
 
 
 export const PrintTemplateHeader = () => {

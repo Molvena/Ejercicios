@@ -4,17 +4,42 @@
     box-sizing: border-box;
   }
   
-  #app,
+
+  @import url("https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@300;400;700&display=swap");
+
+ :root {
+  --fondo: #f3df6b;
+  --fondoClaro: #2152f336;
+  --colorUno: #2152f3;
+  --colorDos: #f5d859;
+  --fuente: arial,"Anek Telugu", sans-serif;
+  --fontSize-XL: 3rem;
+  --fontSize-L: 2rem;
+  --fontSize-M: 1.5rem;
+  --fontSize-S: 1rem;
+  --fontSize-XS: 0.58rem;
+}
+
+
+
+main {
+  min-height: 95vh;
+  padding-top: 20vh;
+  background: var(--fondoClaro)
+}
+
+
+
+
+
+  /* #app,
   html {
     width: 100vw;
     min-height: 100vh;
   }
   
-  header {
-    height: 20vh;
-    width: 100vw;
-    position: fixed;
-  }
+  
+  
   
   main {
     min-height: 90vh;
@@ -25,3 +50,4 @@
     height: 10vh;
   }
   
+  */

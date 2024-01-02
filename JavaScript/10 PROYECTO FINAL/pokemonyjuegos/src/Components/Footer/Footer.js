@@ -1,7 +1,8 @@
 import "./Footer.css";
 
 const template = () => `
-<h3><span>Soy el Footer</span> Proyecto Elena</h3>
+<h3>PROYECTO FINAL JAVASCRIPT</h3>
+<h3>Elena Gómez Cuevas</h3>
 `;
 
 export const PrintTemplateFooter = () => {
