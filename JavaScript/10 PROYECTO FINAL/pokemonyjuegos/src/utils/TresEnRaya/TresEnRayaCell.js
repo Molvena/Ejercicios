@@ -2,7 +2,7 @@
 let turno = 0;
 
 export const cellPulsada = (e) => {
-console.log(pulsado);
+console.log("pulsado");
 
     // turno ++;
     // const cell = e.target;

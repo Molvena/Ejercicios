@@ -17,14 +17,14 @@ const template = () => `
     <button id="reset-button">Reiniciar</button>
     `
 
-
     
 const listener = () => {
  const cells = document.querySelectorAll(".cell");
      cells.forEach((cell) => {
-        cell.addEventListener("click", cellPulsada());
+        cell.addEventListener("click", () => cellPulsada());
     })
 };
 export const PrintTemplateTresEnRaya = () => {
     document.querySelector("main").innerHTML = template();
+    listener();
 }
