@@ -3,10 +3,9 @@
 //Mas abajo me refiero al turno par e impar  de cada partida 
 //para que coja un color u otro
 
-import { PrintTemplateTresEnRaya } from "../../pages";
+//import { PrintTemplateTresEnRaya } from "../../pages";
 import { initControler } from "../route";
-
-
+//import { haGanado, tablero } from "./TresEnRayaComprobacion";
 
 
 
@@ -19,12 +18,13 @@ export const cellPulsada = (e, pos) => {
 //console.log("pulsado");
     turno ++;
     const cell = e.target;
-    const color = turno % 2 ?  "blue":"yellow"
+    const color = turno % 2 ?  "var(--colorUno)":"var(--colorDos)"
     cell.style.backgroundColor = color ;
     console.log(pos);
     tablero[pos] = color;
     console.log(haGanado());
-    //if (haGanado())alert("Enhorabuena player " + color)
+    console.log(tablero);
+    
 //Definimos mas abajo y fuera de esta la funcion haGanado
 //Si la funcion haGanado es true, se ha ganado la partida
     if (haGanado() === true) {
@@ -32,8 +32,8 @@ export const cellPulsada = (e, pos) => {
             // SetTimeOut para que espere un poquito y vaciar el div
         const div = document.querySelector("#game-board");
         div.innerHTML = "";
-            //turno = 0;
-            //PrintTemplateTresEnRaya();
+         //Ahora creo un mensaje de ganador y un boton de play again
+         //y fuera de esto defino los listeners de este
         const h1 = document.createElement("h1");
         h1.innerHTML = "Jugador " + color +" Has ganado!!";
         const button = document.createElement("button");
@@ -41,24 +41,29 @@ export const cellPulsada = (e, pos) => {
         button.setAttribute("id", "TresEnRayaReset");
         div.append(h1, button);
         listener();
-            }, 500);
-         //Si la funcion haGanado es false,pero el array esta lleno hay empate
-        }else if (haGanado() === false && tablero.lenght === 9){
-            
-            console.log("empate");
-            console.log(tablero);
+            }, 500); 
+         //Si la funcion haGanado es false, pero el array esta lleno y ningun valor es cero hay empate
+        }else if (haGanado() === false && tablero.length === 9 //&& !tablero[pos] === 0
+        ){
+        console.log("empate");
+        setTimeout(() => {
+        // SetTimeOut para que espere un poquito y vaciar el div
+        const divEmpate = document.querySelector("#game-board");
+        divEmpate.innerHTML = "";
+        //Ahora creo un mensaje de empate y un boton de play again
+        //y fuera de esto defino los listeners de este
+        const h1Empate = document.createElement("h1");
+        h1Empate.innerHTML = "Empate";
+        const buttonEmpate = document.createElement("button");
+        buttonEmpate.innerHTML = "Play again";
+        buttonEmpate.setAttribute("id", "TresEnRayaReset");
+        divEmpate.append(h1Empate, buttonEmpate);
+        listener();
+        }, 500);
 
         }
-
-
-
-
-
     };
 //Si la funcion haGanado es true, se ha ganado la partida
-
-
-
 
 
 
@@ -100,6 +105,7 @@ const listener = () => {
 
   //e iniciamos el juego
       initControler("TresEnRaya");
+      
       console.log(turno);
        console.log(tablero);
     });
