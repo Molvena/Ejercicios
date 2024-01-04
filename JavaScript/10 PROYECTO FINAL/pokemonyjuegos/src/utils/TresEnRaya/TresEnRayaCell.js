@@ -3,23 +3,27 @@
 //Mas abajo me refiero al turno par e impar  de cada partida 
 //para que coja un color u otro
 
-//import { PrintTemplateTresEnRaya } from "../../pages";
 import { initControler } from "../route";
-//import { haGanado, tablero } from "./TresEnRayaComprobacion";
-
-
 
 let turno = 0;
 //Creo un array de 9 posiciones, que voy a ir rellenando
 //hay que crearlo con un let y no con const, para poder vaciarlo al final de la partida
 let tablero = [];
 
+//Para que no nos permita pinchar dos veces en la misma casilla
+//tenemos que poner la condicion de que haga la lógica solo
+//si lo que hay dentro del array  no es un string
+//y se trata de una casilla vacia
+//por eso lo metemos todo dentro de ese if
+//El typeof te devuelve el tipo de operando, string, number, object, etc.
+
 export const cellPulsada = (e, pos) => {
+    if(typeof tablero[pos] != "string"){
 //console.log("pulsado");
     turno ++;
     const cell = e.target;
-    const color = turno % 2 ?  "var(--colorUno)":"var(--colorDos)"
-    cell.style.backgroundColor = color ;
+    const color = turno % 2 ?  "blue":"yellow"
+    cell.style.backgroundColor = color;
     console.log(pos);
     tablero[pos] = color;
     console.log(haGanado());
@@ -29,12 +33,13 @@ export const cellPulsada = (e, pos) => {
 //Si la funcion haGanado es true, se ha ganado la partida
     if (haGanado() === true) {
         setTimeout(() => {
-            // SetTimeOut para que espere un poquito y vaciar el div
+        // SetTimeOut para que espere un poquito y vaciar el div
         const div = document.querySelector("#game-board");
         div.innerHTML = "";
          //Ahora creo un mensaje de ganador y un boton de play again
          //y fuera de esto defino los listeners de este
         const h1 = document.createElement("h1");
+        h1.setAttribute("class", "texto");
         h1.innerHTML = "Jugador " + color +" Has ganado!!";
         const button = document.createElement("button");
         button.innerHTML = "Play again";
@@ -42,9 +47,8 @@ export const cellPulsada = (e, pos) => {
         div.append(h1, button);
         listener();
             }, 500); 
-         //Si la funcion haGanado es false, pero el array esta lleno y ningun valor es cero hay empate
-        }else if (haGanado() === false && tablero.length === 9 //&& !tablero[pos] === 0
-        ){
+         //Si la funcion haGanado() es false, y ya vamos por el turno 9 hay empate
+        }else if (haGanado() === false && turno == 9){
         console.log("empate");
         setTimeout(() => {
         // SetTimeOut para que espere un poquito y vaciar el div
@@ -54,18 +58,17 @@ export const cellPulsada = (e, pos) => {
         //y fuera de esto defino los listeners de este
         const h1Empate = document.createElement("h1");
         h1Empate.innerHTML = "Empate";
+        h1Empate.setAttribute("class", "texto");
         const buttonEmpate = document.createElement("button");
         buttonEmpate.innerHTML = "Play again";
         buttonEmpate.setAttribute("id", "TresEnRayaReset");
         divEmpate.append(h1Empate, buttonEmpate);
         listener();
         }, 500);
-
+        }
         }
     };
 //Si la funcion haGanado es true, se ha ganado la partida
-
-
 
 //Vamos a crear una funcion que evalue el tablero
 //Lo primero que evaluamos es que las tres posiciones de arriba sean iguales
@@ -102,11 +105,9 @@ const listener = () => {
     turno = 0;
     //vaciamos las celdas
     tablero =[];
-
   //e iniciamos el juego
       initControler("TresEnRaya");
-      
-      console.log(turno);
+       console.log(turno);
        console.log(tablero);
     });
   };

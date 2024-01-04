@@ -2,25 +2,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 70vh;
+    min-height: 75vh;
     
   
     & img {
-      
-      border-radius: 50%
+            border-radius: 50%
     }
       
-
-
-    & #navigatePokemon{
-      background-color: var(--colorDos);
     
-    }
-
-    & #juegos{
-      background-color:white;
-    }
-
     & ul {
       display: flex;
       flex-wrap: wrap;
@@ -43,8 +32,7 @@
         margin: 0.5rem;
         box-shadow: 0px 8px 30px -3px rgba(0, 0, 0, 0.61);
       
-      
-        
+             
       }
     }
   }

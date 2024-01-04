@@ -1,33 +1,81 @@
 #game-board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    width: 600px;
-    height: 600px;
-    margin: 200px auto;
+    width: 300px;
+    height: 300px;
+    margin: 70px auto 20px auto ;
     border: 2px solid black;
-  }
+    box-shadow: 0px 8px 30px -3px rgba(0, 0, 0, 0.61);
+
+    @media(max-width: 300px) {
+      width: 180px;
+      height: 180px;
+    }
+
+    @media(min-width: 800px) {
+      width: 600px;
+      height: 600px;
+    }
+
+    @media(min-width: 1000px) and (max-height: 800px) {
+      width: 300px;
+      height: 300px;
+    }
+
+
+   & .cell {
+      box-sizing: border-box;
+      width: 100px;
+      height: 100px;
+      border: 2px solid black;
+      font-size: 4em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
   
-  .cell {
-    box-sizing: border-box;
-    width: 200px;
-    height: 200px;
-    border: 2px solid black;
-    font-size: 4em;
-    display: flex;
-        justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
+      @media(max-width: 300px) {
+        width: 60px;
+        height: 60px;
+      }
   
-  .cell:hover {
-    background-color: #ddd;
-  }
+      @media(min-width: 800px) {
+        width: 200px;
+        height: 200px;
+      }
   
-  #reset-button {
-    display: block;
-    margin: 10px auto;
-    font-size: 1.5em;
-    padding: 10px 20px;
-    cursor: pointer;
+      @media(min-width: 1000px) and (max-height: 800px) {
+        width: 100px;
+        height: 100px;
+      }
+
+    & .cell:hover {
+        background-color: #ddd;
+      }
+    }
+
+    & .texto {
+      width: 20vh;
+      height: 10vh;
+      padding: 20px 8px;
+      font-size: var(--fontSize-S);
+      font-family:var(--fuente); 
+      
+    }    
+
+    & #TresEnRayaReset {
+        height: 50px;
+        width: 10vh;
+        background: var(--colorDos);
+        margin: 180px auto auto 0px;
+        font-size:var(--fontSize-XS);
+        font-family:var(--fuente);
+        padding: 10px 10px;
+        cursor: pointer;
+    }
   }
+   
   
+  
+  
+ 

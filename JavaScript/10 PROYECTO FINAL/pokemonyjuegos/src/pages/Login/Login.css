@@ -7,6 +7,7 @@
     align-items: center;
     position: fixed;
     background: var(--fondoClaro);
+    
   
     & #titleLogin {
       margin: 2rem;
@@ -26,11 +27,12 @@
       width: 300px;
       height: 40px;
       margin: 20px;
-      color: white;
+      color: var(--colorDos);
       background-color: var(--colorUno);
       border: none;
       border-radius: 5px;
       font-size: var(--fontSize-S); 
+      box-shadow: 0px 8px 30px -3px rgba(0, 0, 0, 0.61);
     }
   }
   

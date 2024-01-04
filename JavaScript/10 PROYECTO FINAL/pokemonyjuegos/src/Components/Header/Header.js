@@ -11,12 +11,12 @@ const template = () => `
   />
   <nav>
     <img
-      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1703957106/ilustracion-vector-rueda-fortuna-realista-multicolor_79145-1229_xmsfuo.avif"
+      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1703958997/images_g7tfsx.jpg"
       alt=" change to style mode page"
       id="changeColor"
     />
     <img
-      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1702920355/images_k7wfea.png"
+      src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1704388461/17e8d8cd525c5140afde00e0740e22e2_wihl01.jpg"
       alt=" navigate to home app"
       id="buttonDashboard"
     />

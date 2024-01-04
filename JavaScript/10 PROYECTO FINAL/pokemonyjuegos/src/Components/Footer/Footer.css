@@ -6,7 +6,7 @@ footer {
     justify-content: space-around;
     position: fixed;
     bottom: 0;
-    background-color: var(--fondo);
+    background-color: var(--fondoDos);
     font-size:var(--fontSize-XS);
     font-family:var(--fuente); 
     @media(max-width: 600px) {
@@ -14,7 +14,7 @@ footer {
     
       }
     & h3 {
-      color: var(--colorUno);
+      color: var(--colorDos);
         
     }  
    

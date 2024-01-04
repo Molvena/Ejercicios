@@ -14,7 +14,7 @@ const template = () => `
       <li>
         <figure id="juegos">
           <img class:"juego"
-            src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1702818672/download_p80n1d.png"
+            src="https://res.cloudinary.com/dkr0cj7oc/image/upload/v1702920355/images_k7wfea.png"
             alt=" go to game"
           />
         </figure>
