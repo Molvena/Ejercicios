@@ -35,6 +35,7 @@ const listener = (allData) => {
 export const printSelectTypePokemon = (types,allData) => {
     const selectType = document.createElement("select");
     const optionType = document.createElement("option");
+    
     optionType.textContent = "Todos";
     selectType.appendChild(optionType);
 

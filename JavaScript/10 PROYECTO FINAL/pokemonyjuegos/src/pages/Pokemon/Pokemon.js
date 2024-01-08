@@ -27,7 +27,6 @@ const getDataService = async () => {
   const tipos = typesPokemon(data);
   //console.log("🚀 ~ file: Pokemon.js:24 ~ getDataService ~ tipos :", tipos );
   printSelectTypePokemon(tipos, data);
-
   listeners(data);
   console.log(data);
   printGallery(data);
@@ -52,8 +51,6 @@ export const printGallery = (dataPrint) => {
 //tengo que llamar al listeners desde getDataService y meterle como parametro todos
 //los datos para que me filtre
 
-
-
 const listeners = (totalData) => {
   const inputPokemon = document.getElementById("inputPokemon");
   inputPokemon.addEventListener("input", (InformacionInput)=>{
@@ -62,7 +59,6 @@ const listeners = (totalData) => {
   printGallery(filterPokemon);
   });
 }
-
 
 export const PrintPokemonPage = () => {
   document.querySelector("main").innerHTML = template();

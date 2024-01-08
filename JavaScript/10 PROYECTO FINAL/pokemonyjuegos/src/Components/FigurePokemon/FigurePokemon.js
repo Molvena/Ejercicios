@@ -10,10 +10,9 @@ const template =(name,id,image,type, height, weight) =>`
 </figure>
 `
 
-//${location_area_encounters.location_area[0].name}
+
 //Le doy una clase a todas las figure igualpara poder maquetarlas
 //Le doy una clase dinamica con ${} para poder clasificarlos por tipos
-//y otra para poder clasificarlos por región.
 //Cuando queremos meter mmás de una clase lo metemos entre comillas y 
 //lo separamos por espacios
 

@@ -26,14 +26,13 @@ const mappeo = (data) => {
     return resultadoPokemon;
 }
 
-    // habilidad: item.abilities,
-    // region: item.location_area_encounters,
+  
 
 
 
 //Primero creo una función con la que voy a obtener los 150 pokemon
 //Sera asincrona por herencia (2º paso)
-//Para eso defino un array vacio donde los voy a ir metiendo: RawData
+//Para eso defino un array vacio donde los voy a ir metiendo: arrayPokemon
 //y hago un bucle for de getByIdPokemon del 1 al 151
 //con un push para sacarlos todos
 //Tendre que hacer tambien un map para que me saque solo los datos

@@ -1,6 +1,6 @@
 //Este archivo es para crear la función que filtra los datos del input de pokemon
 //Hago la función a la que llamo en los listeners del input en la pagina Pokemon
-//filtro los pokemosn por la informacion que meto en el input
+//filtro los pokemons por la informacion que meto en el input
 
 export const filterDataPokemon = (data, InformacionInput) => {
     const dataFiltrada = data.filter((item)=>
@@ -19,7 +19,7 @@ export const filterDataPokemon = (data, InformacionInput) => {
 //pero ademas quiero que antes de hacer una seleccion tenga todos los pokemon
 //Hago un condicional con las tres opciones
 //opcion 1 cuando elijo Todos me devuelve sin filtro
-//Opcion 2 cuando ellecciono el tipo en la posicion 1
+//Opcion 2 cuando selecciono el tipo en la posicion 1
 //Opcion 3 cuando selecciono el tipo en la posicion 0
 //Esto lo llamo desde el componente select
 

@@ -19,6 +19,7 @@ export const changeColorRGB = () => {
     let A = Math.random();
   
     const color = `rgba(${R},${G},${B},${A})`;
+    //console.log(color);
     return color;
   };
 

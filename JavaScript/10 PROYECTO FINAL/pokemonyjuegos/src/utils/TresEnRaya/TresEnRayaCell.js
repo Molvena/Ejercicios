@@ -19,7 +19,7 @@ let tablero = [];
 
 export const cellPulsada = (e, pos) => {
     if(typeof tablero[pos] != "string"){
-//console.log("pulsado");
+console.log("pulsado");
     turno ++;
     const cell = e.target;
     const color = turno % 2 ?  "blue":"yellow"
@@ -49,7 +49,7 @@ export const cellPulsada = (e, pos) => {
             }, 500); 
          //Si la funcion haGanado() es false, y ya vamos por el turno 9 hay empate
         }else if (haGanado() === false && turno == 9){
-        console.log("empate");
+        //console.log("empate");
         setTimeout(() => {
         // SetTimeOut para que espere un poquito y vaciar el div
         const divEmpate = document.querySelector("#game-board");
@@ -107,7 +107,7 @@ const listener = () => {
     tablero =[];
   //e iniciamos el juego
       initControler("TresEnRaya");
-       console.log(turno);
-       console.log(tablero);
+      //console.log(turno);
+       //console.log(tablero);
     });
   };
