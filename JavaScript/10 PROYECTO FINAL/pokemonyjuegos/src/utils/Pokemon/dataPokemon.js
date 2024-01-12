@@ -1,7 +1,7 @@
 //En este archivo recibimos de los servicios la informacion de la pokeapi
 //y filtramos los datos que nos interesan: name, id, tipo...
 
-import { getByIdPokemon } from "../services/pokemon.service";
+import { getByIdPokemon } from "../../services/pokemon.service";
 
 
 export const getDataPokemonBucle = async() => {

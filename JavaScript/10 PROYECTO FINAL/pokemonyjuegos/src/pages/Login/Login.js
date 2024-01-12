@@ -19,6 +19,7 @@ const listeners = () => {
     const valueInput = input.value;
 //Le metemos el valor del input al localStorage
     localStorage.setItem("user", valueInput);
+    
     //Y llamamos al initControler sin meterle nada 
     //para que vuelva al route.js y vuelva a valorar si tenemos usuario o no 
     initControler();

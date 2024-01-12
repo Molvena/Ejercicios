@@ -62,5 +62,6 @@ const listeners = (totalData) => {
 
 export const PrintPokemonPage = () => {
   document.querySelector("main").innerHTML = template();
+  document.querySelector("#buttonDashboard").style.display = "block";
   getDataService();
 };

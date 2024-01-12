@@ -38,6 +38,7 @@ console.log("pulsado");
         div.innerHTML = "";
          //Ahora creo un mensaje de ganador y un boton de play again
          //y fuera de esto defino los listeners de este
+        document.querySelector("#game-board").style.display = "block";
         const h1 = document.createElement("h1");
         h1.setAttribute("class", "texto");
         h1.innerHTML = "Jugador " + color +" Has ganado!!";
@@ -56,6 +57,7 @@ console.log("pulsado");
         divEmpate.innerHTML = "";
         //Ahora creo un mensaje de empate y un boton de play again
         //y fuera de esto defino los listeners de este
+        document.querySelector("#game-board").style.display = "block";
         const h1Empate = document.createElement("h1");
         h1Empate.innerHTML = "Empate";
         h1Empate.setAttribute("class", "texto");

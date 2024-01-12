@@ -3,6 +3,7 @@ import { cellPulsada } from "../../utils/index";
 
 
 const template = () => `
+<div id="containergame">
 <div id="game-board">
       <div class="cell" id="cell-0"></div>
       <div class="cell" id="cell-1"></div>
@@ -14,7 +15,7 @@ const template = () => `
       <div class="cell" id="cell-7"></div>
       <div class="cell" id="cell-8"></div>
     </div>
-    
+    </div>
     `
 
     
@@ -26,6 +27,7 @@ const listener = () => {
 };
 export const PrintTemplateTresEnRaya = () => {
         document.querySelector("main").innerHTML = template();
+        document.querySelector("#buttonDashboard").style.display = "block";
     listener();
 }
 

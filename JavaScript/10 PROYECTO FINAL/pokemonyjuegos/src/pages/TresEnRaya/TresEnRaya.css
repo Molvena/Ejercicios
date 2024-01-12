@@ -1,9 +1,17 @@
+#containergame{
+  width:100%;
+  height: 75vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #game-board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     width: 300px;
     height: 300px;
-    margin: 70px auto 20px auto ;
+    /* margin: 70px auto 20px auto ; */
     border: 2px solid black;
     box-shadow: 0px 8px 30px -3px rgba(0, 0, 0, 0.61);
 
@@ -44,20 +52,32 @@
       }
     }
 
+     & h1 .texto{
+      
+      justify-content: center;
+      align-items: center;
+    } 
+
     & .texto {
-      width: 20vh;
-      height: 10vh;
-      padding: 20px 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      margin: 30px 15px ;
+      padding: 20px ;
       font-size: var(--fontSize-S);
       font-family:var(--fuente); 
       
     }    
 
     & #TresEnRayaReset {
+        display: flex;  
+        justify-content: center;
+        align-items: center;
         height: 50px;
-        width: 10vh;
+        width: 150px;
         background: var(--colorDos);
-        margin: 180px auto auto 0px;
+        margin: auto;
         font-size:var(--fontSize-XS);
         font-family:var(--fuente);
         padding: 10px 10px;

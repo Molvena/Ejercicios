@@ -38,9 +38,12 @@ const listeners = () => {
 };
 
 export const PrintDashboard = () => {
+  document.querySelector("#buttonDashboard").style.display = "none";
   document.querySelector("nav").style.display = "flex";
+  
   //Este de arriba es para que se vea la nav
   document.querySelector("main").innerHTML = template();
+ 
   listeners();
 };
 
