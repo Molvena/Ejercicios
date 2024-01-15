@@ -1,0 +1,17 @@
+{
+  "name": "06.2-gamecomplet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.2.12",
+    "puppeteer": "^21.7.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "01-json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "write": "node write.js",
+    "read": "node read.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

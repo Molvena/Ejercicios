@@ -1,0 +1,5 @@
+[
+  { "name": "SpiderMan", "power": 70, "powerful": "low" },
+  { "name": "Dr.Strange", "power": 80, "powerful": "high" },
+  { "name": "Hulk", "power": 110, "powerful": "high" }
+]
