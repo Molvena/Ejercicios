@@ -38,10 +38,10 @@ app.use(express.urlencoded({ limit: "5mb", extended: false }));
 //una vez que lo hayamos creado en Character.routes.js
 
 const CharacterRouter = require("./src/api/routes/Character.routes");
-
 app.use("/api/v1/character", CharacterRouter);
 
-
+const MovieRouter = require("./src/api/routes/Movie.routes");
+app.use("/api/v1/movie", MovieRouter);
 //Cuando no encontramos las rutas generamos un error
 
 app.use("*",(req, res, next) =>{

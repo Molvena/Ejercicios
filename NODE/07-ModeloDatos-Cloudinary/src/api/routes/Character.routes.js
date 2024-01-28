@@ -3,9 +3,9 @@
 const { upload } = require ("../../middleware/files.middleware");
 
 //Importamos los controladores
-//Ahora tenemos solo uno pero ira creciendo
 
-const { create } = require ("../controllers/Character.Controllers");
+
+const { create, getAll, getById, getByName, update, deleteCharacter, toggleMovies } = require ("../controllers/Character.Controllers");
 
 //Nos traemos express, para poder usar router express
 //Creamos un router especifico para Character
@@ -25,8 +25,15 @@ const CharacterRouter = express.Router();
 // para que este disponible cuando entre
 // al controlador mediante la req.file.path ===> esto es igual a la URL de la imagen en cloudinary
 //create es nuestra función que nos hemos traido de los controladores
+//Al meter el getAll si le doy a la opcion del desplegable me lo requiere autommaticamente
 
 CharacterRouter.post("/create", upload.single("image"),create);
+CharacterRouter.get("/getAll/", getAll);
+CharacterRouter.get("/getById/:id", getById);
+CharacterRouter.get("/getByName/:name", getByName);
+CharacterRouter.patch("/update/:id", upload.single("image"), update);
+CharacterRouter.delete("/delete/:id", deleteCharacter);
+CharacterRouter.patch("/toogle/:id", toggleMovies);
 
 module.exports = CharacterRouter;
 
