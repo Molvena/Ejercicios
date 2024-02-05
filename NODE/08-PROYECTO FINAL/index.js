@@ -11,15 +11,20 @@ const express = require("express");
 //Requerimos cloudinary
 //esto lo hacemos despues cuando hayamos creado nuestra funcion en middleware.js
 
-const { configCloudinary } = require("./src/middleware/files.middleware");
+// const { configCloudinary } = require("./src/middleware/files.middleware");
 
-configCloudinary();
+// configCloudinary();
 
 //Conectamos con la base de datos
 
 const { connect } = require ("./src/utils/db");
 
 connect();
+
+//Configuramos Cloudinary
+
+const { configCloudinary } = require("./src/middleware/files.middleware");
+configCloudinary();
 
 //Vbles de entorno
 
@@ -29,6 +34,13 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+// damos las cors al server
+
+const cors = require("cors");
+
+app.use(cors());
+
+
 //Definimos las limitaciones
 
 app.use(express.json({ limit: "5mb" }));
@@ -36,14 +48,10 @@ app.use(express.urlencoded({ limit: "5mb", extended: false }));
 
 
 //Definimos las rutas
-//Requerimos CharacterRoutes (esto lo hacemos despues)
-//una vez que lo hayamos creado en Character.routes.js
 
-// const CharacterRouter = require("./src/api/routes/Character.routes");
-// app.use("/api/v1/character", CharacterRouter);
+const UserRoutes = require("./src/api/routes/User.routes");
+app.use("/api/v1/user", UserRoutes);
 
-// const MovieRouter = require("./src/api/routes/Movie.routes");
-// app.use("/api/v1/movie", MovieRouter);
 
 
 //Cuando no encontramos las rutas generamos un error
