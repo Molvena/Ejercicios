@@ -33,7 +33,8 @@ const generateToken = (id,email) => {
 
 const verifyToken = (token) => {
   //verificamos si recibimos el token por parametros
-  //para generar un error si no es asi
+  //para generar un error, si no es asi
+  //Aqui genero el error con trow porque no tengo acceso a la req
 
   if (!token) {
     throw new Error("Sin token");
