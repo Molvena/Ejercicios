@@ -2,13 +2,16 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 dotenv.config();
 const nodemailer = require("nodemailer");
+const validator = require("validator");
 const randomCode = require("../../utils/randomCode"); 
 const User = require("../models/User.model");
+const {deleteImgCloudinary} = require("../../middleware/files.middleware");
 const { generateToken } = require("../../utils/token");
 const randomPassword = require("../../utils/randomPassword");
+const enumOk = require("../../utils/enumOk");
 
 
-//REGISTER CON REDIRECT 
+//?----REGISTER CON REDIRECT 
 //Para registrarse nos redirecciona a otro controlador
 //que es el que envía el código
 
@@ -89,7 +92,7 @@ const registerWithRedirect = async (req, res, next) => {
     };
 
     //HACEMOS LA FUNCIÓN QUE ENVIA EL CODIGO DE CONFIRMACIÓN.
-    //SEND CODE CONFIRMATION
+    //----SEND CODE CONFIRMATION (redirect)
     //Y que metemos en el redirect
 
     const sendCode = async (req, res, next) => {
@@ -147,7 +150,7 @@ const registerWithRedirect = async (req, res, next) => {
         }
       };
 
-// RESEND CODE
+//?----RESEND CODE
 //Por si se quiere volver a enviar el código de confirmación
 
 const resendCode = async (req, res, next) => {
@@ -202,7 +205,7 @@ const resendCode = async (req, res, next) => {
   }
 };
     
-// CHECK NEW USER
+//?----CHECK NEW USER
 //
 
 const checkNewUser = async (req,res,next) => {
@@ -276,7 +279,7 @@ const checkNewUser = async (req,res,next) => {
   }
 };
 
-// LOGIN
+//?----LOGIN
 
 
 const login = async(req, res, next) =>{
@@ -315,7 +318,7 @@ const login = async(req, res, next) =>{
 
     } else {
       //Si no existe el userDB. Usuario no encontrado
-      return res.status(404).json({error:"Ususario no encontrado", message:error.message});
+      return res.status(404).json({error:"Ususario no encontrado"});
     };
 
   } catch (error) {
@@ -325,7 +328,7 @@ const login = async(req, res, next) =>{
   };
 };
 
-//AUTOLOGIN
+//?----AUTOLOGIN
 //Despues de checkear se nos va a loguear automáticamente
 //La diferencia con el login es que aquí se comparan dos contraseñas encriptadas
 //por lo que no hace falta llamar al bcrypt
@@ -373,7 +376,7 @@ const autoLogin = async (req, res, next) => {
   }
 };
 
-//CHANGE PASSWORD
+//?----FORGOT PASSWORD
 //CAMBIO DE CONTRASEÑA CUANDO NO ESTAS LOGUEADO
 //por olvido
 //Antes tenemos que crear randomPassword en utils
@@ -407,7 +410,7 @@ const forgotPassword = async(req, res, next) => {
   }
 };
 
-//SEND PASSWORD
+//----SEND PASSWORD (redirect)
 //Hacemos la función que envía la nueva contraseña
 //Y que metemos en el redirect
 
@@ -518,7 +521,244 @@ const sendPassword = async (req, res, next) => {
   }
 };
 
+//?----GHANGE PASSWORD (una vez logueado)-----> Autenticada
+//El usuario mete la clave antigua y la nueva para cambiarla
+const changePassword = async (req, res, next) =>{
+  try {
+    //Desectructuramos la password y la newPassword del req.body
+    const {password, newPassword} = req.body;
+    //Comprobamos si la contraseña introducida es suficientemente strong
+    //para ello usamos isStrongPassword(), metodo de validator
+    const validate = validator.isStrongPassword(newPassword);
+    if(validate) {
+      //Si es suficientemente strong sacamos el id del usuario
+      //Como esta autenticado lo saco de req.user
+      const {_id} =req.user;
+      //Comprobamos si la password introducida (req.body) es igual 
+      //a la que tengo guardada en la base de datos (req.user), 
+      //ésta está encripatada
+      //por lo que tengo que usar bcrypt.compareSync()
+      if(bcrypt.compareSync(password, req.user.password)) {
+        //Si coinciden encriptamos la contraseña y actualizamos el user
+        const newPassHashed = bcrypt.hashSync(newPassword,10);
 
+        try{
+          await User.findByIdAndUpdate(_id, {password:newPassHashed});
+
+          //Ahora hacemos un test en tiempo real para comprobar
+          //que el usuario se ha actualizado
+          //Buscamos al user actualizado
+          const userSave = await User.findById(_id);
+          //Comprobamos la contraseña del body con la del user actualizada
+          if(bcrypt.compareSync(newPassword, userSave.password)){
+            //Si coinciden enviamos respuesta correcta
+            return res.status(200).json({user:userSave, testupdate: true})
+          }else{
+            //Si no: error. No se ha actualizado la contraseña
+            return res.status(409).json({ testupdate: false})
+          }
+        } catch{
+          //Error al actualizar el usuario
+          return res.status(409).json({
+            error: "Error al actualizar el user",
+            message: error.message,
+          })
+        }
+      } else{
+        //las contraseñas no coinciden
+        return res.status(409).json({
+          error: "Contraseña antigua incorrecta",
+          message: "Pruebe otra contraseña",
+        });
+      }
+    } else {
+      //la contraseña introducida no es segura
+      return res.status(409).json({
+        error: "La contraseña no es segura",
+        message:"Minimo 8 caracteres, 1 simbolo, 1 mayuscula, 1 minuscula y un numero",
+      });
+    }
+  } catch {
+    //Error general de cambio de contraseña
+    return res.status(409).json({
+      error: "Error general de cambio de contraseña",
+      message: error.message,
+    });
+  }
+};
+
+//?----UPDATE-----> Autenticada
+//Actualizamos los datos del usuario
+
+const updateUser = async (req, res, next) =>{
+  try{
+    //Capturamos la nueva imagen subida a cloudinary (si viene en req.file)
+    let catchImg = req.file?.path;
+    console.log(req.file);
+
+    //Actualizamos los indexes. Esto es porque hay algunos campos que son únicos
+      await User.syncIndexes();
+      //Hacemos una nueva instancis del User con los datos traidos del body
+      //a la que llamamos patchUser
+      const patchUser = new User(req.body);
+      //Comprobamos que el req.file traiga la imagen para añadirla 
+      //al user actualizado. Dos formas: 
+      //if(req.file) {patchUser.image= catchImg} 
+
+      req.file && (patchUser.image = catchImg);
+
+      //Ahora salvaguardo la info que no quiero que cambie
+      //La que quiero que se mantenga de la que hay en la BD
+      //Al ser una ruta autenticada tengo acceso al req.user que se crea en el middleware
+
+      patchUser._id = req.user._id;
+      patchUser.password = req.user.password;
+      patchUser.rol = req.user.rol;
+      patchUser.confirmationCode = req.user.confirmationCode;
+      patchUser.email = req.user.email;
+      patchUser.check = req.user.check;
+
+      console.log("patchUser",patchUser);
+
+      //Comprobamos mediante el enumOk que si el user quiere cambiar el género, 
+      //este entre las opciones a elegir
+      if(req.body?.gender) {
+        //Si trae el genero por el body
+        //Evaluo que el check sea true, si es asi lo cambio poniendo el que trae 
+        //por el body, y si no dejo el que tenia
+        const resultEnum = enumOk(req.body?.gender);
+        patchUser.gender = resultEnum.check? req.body.gender: req.user.gender;
+      }  
+
+        //Ahora hacemos un try/Catch para guardar al usuario
+        //No usamos save, eso es solo para cuando lo creamos
+        try {
+          //Lo guardamos con el metodo findByIdAndUpdate(id,info que queremos actualizar)
+          await User.findByIdAndUpdate(req.user._id, patchUser);
+
+          //Ahora hacemos un test en tiempo real RUNTIME
+          //para ver si se ha actualizado la información
+          //Buscamos al user guardado ya actualizado
+          const updateUser = await User.findById(req.user._id);
+          console.log("updateUser",updateUser);
+
+          //Sacamos las claves del req.body para saber lo que quiere actualizar
+          const updateKeys = Object.keys(req.body);
+
+          //Creo un array vacio donde voy a guardar el test
+          const testUpdate = [];
+
+          //Recorremos las claves que el user quiere actualizar con un forEach
+
+          updateKeys.forEach((item)=>{
+            if (updateUser[item] === req.body[item]) {
+              //Hacemos una doble verificaión comprobando además 
+              //que es diferente a lo guardado en el req.user (BD)
+              if (updateUser[item] !== req.user[item]) {
+                //Si ambas verificaciones son true, añadimos un objeto al array del test
+                testUpdate.push({[item]:true});
+                
+              } else {
+                //la información es la misma que teniamos en la BD
+                testUpdate.push({[item]:"Los datos introducidos son los mismos que habia guardados"});
+              }
+
+            }else {
+              //si la informacion no coincide 
+              testUpdate.push({
+                [item]: false,
+              });
+            }
+          });
+           //Tenemos que checkear el req.file por si hay que hacer 
+           //el test con la imagen
+           // Si la imagen del user actualizado es igual 
+           //a la imagen nueva, el test es correcto.
+           // Si no es igual, no se actualizó y ponemos el test en false.
+           if(req.file) {
+            updateUser.image === catchImg? 
+            testUpdate.push({image:true}): 
+            testUpdate.push({image:false});
+           };
+           //si existe el test de la imagen, es porque hay imagen nueva
+           //por lo cual, si la de la BD es diferente a la que 
+           //tenemos por defecto, la borramos.
+           if(
+            testUpdate.image && 
+            updateUser.image !== "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1706383271/Curso/g9xrmbndjzckzsblvx8g.jpg"
+            ){
+              deleteImgCloudinary(req.user.image);
+            };
+
+            //Sacamos un console.log del test
+            console.log("test", testUpdate);
+
+            //una vez finalizado el test lanzamos la respuesta correcta
+            //con el user actualizado
+            return res.status(200).json({user:updateUser,test:testUpdate});
+            
+        } catch{
+          //No se ha guardado al usuario
+           //tengo que borrar la foto de cloudinary
+           if(req.file) {
+            deleteImgCloudinary(catchImg)
+          };
+          return res.status(409).json({
+            error:"Error al actualizar el usuario",
+            message: error.message
+          })
+         
+        };
+      
+
+  } catch {
+    //Error general del update
+     //tengo que borrar la foto de cloudinary
+     if(req.file) {
+      deleteImgCloudinary(catchImg)
+    };
+    return res.status(409).json({
+      error:"Error general al guardar al usuario",
+      message:error.message
+    }); 
+  }
+};
+
+
+
+
+//?----DELETE-----> Autenticada
+//El usuario que hace la petición se borra a sí mismo
+
+const deleteUser = async (req, res, next) =>{
+  //Buscamos al user por id y lo borramos
+  try{
+    await User.findByIdAndDelete(req.user._id);
+
+    //Ahora intentamos buscarlo a ver si se ha borrado
+    const existUser = await User.findById(req.user._id);
+
+    if(!existUser) {
+      //si no existe, borro la imagen de cloudinary
+      //si es diferente a la puesta por defecto
+      //y envío respuesta correcta
+      req.user.image !== "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1706383271/Curso/g9xrmbndjzckzsblvx8g.jpg"
+      && deleteImgCloudinary(req.user.image);
+
+      return res.status(200).json("User borrado");
+    } else {
+      return res.status(409).json({error: "Error al borrar al usuario"})
+    }
+ 
+
+  } catch {
+    //Error general al borrar el user
+    return res.status(409).json({
+      error: "Error general al borrar al usuario",
+      message:error.message
+    });
+  }
+};
 
 
       module.exports = {
@@ -529,5 +769,8 @@ const sendPassword = async (req, res, next) => {
         login,
         autoLogin,
         sendPassword,
-        forgotPassword
+        forgotPassword,
+        changePassword,
+        updateUser,
+        deleteUser
       }

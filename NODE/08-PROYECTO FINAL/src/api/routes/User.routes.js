@@ -1,3 +1,4 @@
+const { isAuth } = require("../../middleware/auth.middleware");
 const  { upload } = require("../../middleware/files.middleware");
 const  {
     registerWithRedirect, 
@@ -7,7 +8,10 @@ const  {
     login,
     sendPassword,
     forgotPassword,
-    autoLogin
+    autoLogin,
+    changePassword,
+    updateUser,
+    deleteUser
 } = require("../controllers/User.controllers");
 
 const UserRoutes = require("express").Router();
@@ -22,10 +26,26 @@ UserRoutes.post("/login", login);
 UserRoutes.post("/autoLogin", autoLogin);
 
 UserRoutes.patch("/forgotPassword", forgotPassword); // redirect sendPassword
-//Controladores usados con redirect
 
+//Rutas autenticadas
+UserRoutes.patch("/changePassword", [isAuth], changePassword);
+UserRoutes.patch("/update", [isAuth], upload.single("image"), updateUser);
+UserRoutes.delete("/delete", [isAuth], deleteUser);
+
+
+
+
+
+//Controladores usados con redirect
 UserRoutes.post("/register/sendMail/:id", sendCode);
 UserRoutes.patch("/forgot/sendPassword/:id", sendPassword);
-
 //Es un patch porque actualiza al usuario
+
+
+
+
+
+
+
+
 module.exports = UserRoutes;

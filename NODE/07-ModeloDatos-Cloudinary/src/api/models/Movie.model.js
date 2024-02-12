@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 
 const MovieSchema =new mongoose.Schema(
     {
-        name:{type: String, required: true, uniqeu: true},
+        name:{type: String, required: true, unique: true},
         year:{type: Number, require: true},
         //Ahora definimos un array de objeto que hace referencia al 
         //esquema creadoi en Movie.model.js
@@ -17,7 +17,7 @@ const MovieSchema =new mongoose.Schema(
     },
     {
         //Si queremos que salga la fecha de creación usamos typestamp
-        timestamp:true,
+        timestamps:true,
     }
 );
 
