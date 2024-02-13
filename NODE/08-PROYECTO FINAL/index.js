@@ -52,7 +52,8 @@ app.use(express.urlencoded({ limit: "5mb", extended: false }));
 const UserRoutes = require("./src/api/routes/User.routes");
 app.use("/api/v1/user", UserRoutes);
 
-
+const AthleteRoutes = require("./src/api/routes/Athlete.routes");
+app.use("/api/v1/athlete", AthleteRoutes);
 
 //Cuando no encontramos las rutas generamos un error
 

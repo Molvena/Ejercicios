@@ -10,8 +10,12 @@ const Schema = mongoose.Schema;
 const SportSchema = new Schema({
     name:{type:String, required:true, unique:true},
     modalidades:{type:String},
-    //olímpico
-    competicionesDestacadas:{type:string, required:false},
+    olímpico: {
+        type: Boolean,
+        default: false,
+        //sera false hasta que definamos lo contrario
+      },
+    competicionesDestacadas:{type:String, required:false},
     //Ahora definimos un array de objeto que hace referencia al 
     //esquema creado en Athlete.model.js
     atlethes:[{type:mongoose.Schema.Types.ObjectId, ref:"Athlete"}],
@@ -20,3 +24,7 @@ const SportSchema = new Schema({
     timestamps:true
 }
 );
+
+const Sport =mongoose.model("Sport", SportSchema);
+
+module.exports = Sport;

@@ -6,7 +6,7 @@
 const mongoose = require("mongoose");
 
 //Nos traemos de mongoose los esquemas de datos
-const Shema = mongoose.Shema;
+const Schema = mongoose.Schema;
 
 //---------> CREAMOS EL MODELO DE DATOS
 // Tenemos que poner a cada clave el tipo de dato
@@ -14,7 +14,7 @@ const Shema = mongoose.Shema;
 //que se puede incluir esa clase --->
 // si es obligatoria , longitud maxima, minima.....
 
-const AthleteShema = new Shema(
+const AthleteSchema = new Schema(
     {
         name:{type:String, required:true, unique:false},
         gender:{
@@ -23,8 +23,8 @@ const AthleteShema = new Shema(
             required:false,
         },
         year:{type:Number, required: true},
-        nationality:{type:String, required:false},
-        image:{type:string, required:false},
+        country:{type:String, required:false},
+        image:{type:String, required:false},
          //Ahora definimos un array de objeto que hace referencia al 
         //esquema creado en Sport.model.js
         sports:[{type:mongoose.Schema.Types.ObjectId, ref:"Sport"}],
@@ -41,9 +41,9 @@ const AthleteShema = new Shema(
 //Con la definición de datos y su esquema vamos a definir
 //nuestro modelo Athlete
 
-const Athlete = mongoose.model("Athlete",AthleteShema);
+const Athlete = mongoose.model("Athlete",AthleteSchema);
 
 //Exportamos el modelo
 
-module.exports = {Athlete};
+module.exports = Athlete;
 
