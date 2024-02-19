@@ -15,10 +15,11 @@ const SportSchema = new Schema({
         default: false,
         //sera false hasta que definamos lo contrario
       },
+    image: {type: String, required: false},
     competicionesDestacadas:{type:String, required:false},
     //Ahora definimos un array de objeto que hace referencia al 
     //esquema creado en Athlete.model.js
-    atlethes:[{type:mongoose.Schema.Types.ObjectId, ref:"Athlete"}],
+    athletes:[{type:mongoose.Schema.Types.ObjectId, ref:"Athlete"}],
 },
 {
     timestamps:true

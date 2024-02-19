@@ -2,8 +2,8 @@
 //Usaremos insomnia, metemos el path y creamos la solicitud
 //Nuestra base de datos se va a llenar
 
-// Traemos la funcion de borrado de imagenes por si el usuario al subir
-// un nuevo Athlete tiene un error que esa imagen se borre 
+// Traemos la funcion de borrado de imagenes por si al subir
+// un nuevo Athlete hay un error, que esa imagen se borre 
 
 const {deleteImgCloudinary} = require("../../middleware/files.middleware");
 
@@ -24,7 +24,7 @@ const createAthlete = async (req, res, next) =>{
     //nos llega en el req.file que es un objeto, en la clave path
     let catchImg = req.file?.path;
 
-    //Actualizamosindexes
+    //Actualizamos indexes
     try{
         //Con el try catch hacemos los indexes que son los indices propios
         //de los datos(claves únicas), para que si hay un modificado posterior 
@@ -36,8 +36,7 @@ const createAthlete = async (req, res, next) =>{
             newAthlete.image = catchImg;
         } else {
             //Si no hay imagen le ponemos una por defecto
-            // let defaultImage = "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1707842081/Curso/silueta-atleta-gotas-pintura_23-2147492712_fm3do8.avif"
-            // newAthlete.image = defaultImage;
+            
             newAthlete.image = "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1707842081/Curso/silueta-atleta-gotas-pintura_23-2147492712_fm3do8.avif"
              
 
@@ -52,7 +51,7 @@ const createAthlete = async (req, res, next) =>{
 
         } else {
             //error. no se ha guadado el athlete
-            return res.status(404).json("Error. No se ha creado el Athlete");
+            return res.status(404).json("Error, no se ha creado el Athlete");
         }
 
 
@@ -71,4 +70,4 @@ const createAthlete = async (req, res, next) =>{
 
 module.exports = {
     createAthlete,
-}
+};

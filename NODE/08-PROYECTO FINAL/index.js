@@ -55,6 +55,12 @@ app.use("/api/v1/user", UserRoutes);
 const AthleteRoutes = require("./src/api/routes/Athlete.routes");
 app.use("/api/v1/athlete", AthleteRoutes);
 
+const SportRouter = require("./src/api/routes/Sport.routes");
+app.use("/api/v1/sport", SportRouter)
+
+const CommentRoutes = require("./src/api/routes/Comment.routes");
+app.use("/api/v1/comment", CommentRoutes);
+
 //Cuando no encontramos las rutas generamos un error
 
 app.use("*",(req, res, next) =>{

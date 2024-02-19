@@ -60,6 +60,23 @@ const UserSchema = new mongoose.Schema(
       image: {
         type: String,
       },
+      //Añadimos id de los Athletes que el user ha dado a me gusta
+      athletesFav:[{type: mongoose.Schema.Types.ObjectId, ref: "Athlete"}],
+
+      //Añadimos id de los Sports que el user ha dado a me gusta
+      sportsFav:[{type:mongoose.Schema.Types.ObjectId, ref: "Sports"}],
+
+      //Añadimos id de otros users que siguen a este user
+      followers: [{type: mongoose.Schema.Types.ObjectId, ref:"User"}],
+
+      //Añadimos id de otros users seguidos por este este user
+      followed: [{type: mongoose.Schema.Types.ObjectId, ref:"User"}],
+
+      //Añadimos id de comentarios que otros users han realizado  a este user
+      commentsByOthers: [{type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
+
+      //Añadimos id de comentarios que este  user ha realizado a otros users
+      postedComments: [{type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
     },
     {
         //para que salga la fecha de creación
@@ -71,7 +88,7 @@ const UserSchema = new mongoose.Schema(
 //en ella vamos a encriptar la contraseña antes de su guardado
 //Usamos de la librería bcrypt .pre y .hash
 //usamos function porque tenemos que usar this
-//Le damos 110vueltas
+//Le damos 10 vueltas
 UserSchema.pre("save", async function (next) {
     try {
       this.password = await bcrypt.hash(this.password, 10);

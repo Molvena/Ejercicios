@@ -26,7 +26,7 @@ const CharacterSchema = new Schema(
         },
         image: { type: String, required: false },
         //Ahora definimos un array de objeto que hace referencia al 
-        //esquema creadoi en Movie.model.js
+        //esquema creado en Movie.model.js
         movies:[{type:mongoose.Schema.Types.ObjectId, ref:"Movie"}],
     },
     //Si queremos que salga la fecha de creación usamos typestamp
