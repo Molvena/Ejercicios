@@ -11,7 +11,10 @@ const randomPassword = require("../../utils/randomPassword");
 const enumOk = require("../../utils/enumOk");
 
 
-//?----REGISTER CON REDIRECT 
+// --------------------------------------------------------
+//?---------------REGISTER CON REDIRECT -------------------
+// --------------------------------------------------------
+
 //Para registrarse nos redirecciona a otro controlador
 //que es el que envía el código
 

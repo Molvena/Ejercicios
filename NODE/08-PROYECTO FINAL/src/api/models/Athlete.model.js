@@ -32,6 +32,9 @@ const AthleteSchema = new Schema(
             type: Boolean,
             default: true,
         },
+        likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+
     },
     {
         timestamps:true,

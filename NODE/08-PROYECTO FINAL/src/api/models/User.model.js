@@ -77,6 +77,10 @@ const UserSchema = new mongoose.Schema(
 
       //Añadimos id de comentarios que este  user ha realizado a otros users
       postedComments: [{type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
+
+      //Añadimos id de los comments a los que el user ha dado a me gusta
+      commentsFav:[{type:mongoose.Schema.Types.ObjectId, ref: "Comment"}],
+
     },
     {
         //para que salga la fecha de creación

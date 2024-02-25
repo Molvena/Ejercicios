@@ -4,7 +4,7 @@ const { upload } = require("../../middleware/files.middleware");
 //Importamos los controladores 
 
 const {
-     createAthlete,
+     createAthlete,  getAllAthletes, updateAthlete, toogleSport, getByIdAthlete,
      } = require("../controllers/Athlete.controllers");
 
 //Nos traemos express, para poder usar router express
@@ -23,5 +23,9 @@ const AthleteRouter = express.Router();
 //esto es igual a la URL de la imagen en cloudinary
 
 AthleteRouter.post("/create", upload.single("image"), createAthlete);
+AthleteRouter.get("/getAllAthletes", getAllAthletes);
+AthleteRouter.patch("/update/:id", upload.single("image"), updateAthlete);
+AthleteRouter.patch("/toogleSport/:id", toogleSport);
+AthleteRouter.get("/getById/:id", getByIdAthlete);
 
 module.exports = AthleteRouter;

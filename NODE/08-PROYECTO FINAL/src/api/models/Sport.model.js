@@ -10,9 +10,9 @@ const Schema = mongoose.Schema;
 const SportSchema = new Schema({
     name:{type:String, required:true, unique:true},
     modalidades:{type:String},
-    olímpico: {
+    olimpico: {
         type: Boolean,
-        default: false,
+        default: true,
         //sera false hasta que definamos lo contrario
       },
     image: {type: String, required: false},
@@ -20,6 +20,8 @@ const SportSchema = new Schema({
     //Ahora definimos un array de objeto que hace referencia al 
     //esquema creado en Athlete.model.js
     athletes:[{type:mongoose.Schema.Types.ObjectId, ref:"Athlete"}],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 },
 {
     timestamps:true
