@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema(
       athletesFav:[{type: mongoose.Schema.Types.ObjectId, ref: "Athlete"}],
 
       //Añadimos id de los Sports que el user ha dado a me gusta
-      sportsFav:[{type:mongoose.Schema.Types.ObjectId, ref: "Sports"}],
+      sportsFav:[{type:mongoose.Schema.Types.ObjectId, ref: "Sport"}],
 
       //Añadimos id de otros users que siguen a este user
       followers: [{type: mongoose.Schema.Types.ObjectId, ref:"User"}],

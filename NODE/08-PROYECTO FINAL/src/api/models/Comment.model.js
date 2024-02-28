@@ -17,7 +17,7 @@ const CommentSchema = new Schema(
         },
         content:{ type:String , required:true },
         // Array de ids de user que les gusta el comentario
-        likes: [{type: mongoose.Schema.Types.ObjectId, ref:"User"}],
+        likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
         // Si va dirigido a un Athlete:
         // Id del Athlete al que va dirigido el comentario

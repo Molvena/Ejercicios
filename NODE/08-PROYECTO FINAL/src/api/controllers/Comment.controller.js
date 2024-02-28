@@ -40,6 +40,7 @@ const createComment = async (req, res, next) => {
             recipientUser: idRecipient,
             owner: req.user._id
         });
+        console.log("newComment", newComment);
         //Lo guardamos
         const savedComment = await newComment.save();
         if(savedComment) {
@@ -50,7 +51,7 @@ const createComment = async (req, res, next) => {
                     $push:{commentsByOthers:newComment._id},
                 });
                 //Actualizamos al owner
-                await User.findByIdAndUpdate(req.user_id,{
+                await User.findByIdAndUpdate(req.user._id,{
                     $push:{postedComments:newComment._id},
                 });
                 //Respuesta correcta
@@ -98,7 +99,7 @@ const createComment = async (req, res, next) => {
                     $push:{comments:newComment._id},
                 });
                 //Actualizamos al owner
-                await User.findByIdAndUpdate(req.user_id,{
+                await User.findByIdAndUpdate(req.user._id,{
                     $push:{postedComments:newComment._id},
                 });
                 //Respuesta correcta
@@ -146,7 +147,7 @@ const createComment = async (req, res, next) => {
                     $push:{comments:newComment._id},
                 });
                 //Actualizamos al owner
-                await User.findByIdAndUpdate(req.user_id,{
+                await User.findByIdAndUpdate(req.user._id,{
                     $push:{postedComments:newComment._id},
                 });
                 //Respuesta correcta
@@ -181,7 +182,7 @@ const createComment = async (req, res, next) => {
         const newComment = new Comment({
             ...req.body,
             recipientSport: idRecipient,
-            owner: req.user_id
+            owner: req.user._id
         });
         //Lo guardamos
         const savedComment = await newComment.save();
@@ -193,7 +194,7 @@ const createComment = async (req, res, next) => {
                     $push:{comments:newComment._id},
                 });
                 //Actualizamos al owner
-                await User.findByIdAndUpdate(req.user_id,{
+                await User.findByIdAndUpdate(req.user._id,{
                     $push:{postedComments:newComment._id},
                 });
                 //Respuesta correcta
@@ -208,7 +209,7 @@ const createComment = async (req, res, next) => {
             } catch (error) {
                 //Error al actualizar el Sport o el owner
                 return res.status(409).json({
-                    error: "Error al actualizar Sporto User",
+                    error: "Error al actualizar Sport o User",
                     message:error.message,
                 });
             }
@@ -229,8 +230,33 @@ const createComment = async (req, res, next) => {
 };
 
 // --------------------------------------------------------
+//?-----------------------------GET ALL --------------------
+// --------------------------------------------------------
+
+const getAllComments = async(req, res, next) => {
+    try {
+        // Traemos todos los elementos de la coleccion
+        const allComments = await Comment.find();
+        // Find nos devuelve un array con todos los elementos coincidentes
+        if(allComments.length > 0) {
+            return res.status(200).json(allComments);
+        } else {
+            return res.status(404).json("No se han encontrado Comentarios")
+        }       
+    } catch (error) {
+        return res.status(409).json({
+            error: "Error al buscar Comentarios",
+            message: message.error
+        });
+    }
+};
+
+// --------------------------------------------------------
 //?---------------------- DELETE --------------------------
 // --------------------------------------------------------
 
-module.exports = {createComment};
+module.exports = {
+    createComment,
+    getAllComments
+};
 

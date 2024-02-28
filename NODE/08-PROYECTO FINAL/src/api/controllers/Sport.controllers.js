@@ -59,7 +59,7 @@ const createSport = async(req, res, next) =>{
 };
 
 // --------------------------------------------------------
-//?-----------------------PATCH TOGGLE --------------------
+//?-----------------------PATCH toogleAthletes --------------------
 // --------------------------------------------------------
 //Hacemos un Toggle Athletes para  meter o quitar Athlets del Sport
 
@@ -184,22 +184,99 @@ const getAllSports = async(req, res, next) => {
     }
 };
 
+// --------------------------------------------------------
+//?------------------getById-------------------------------
+// --------------------------------------------------------
 
+const getByIdSport = async(req, res, next) => {
+    //traemos el id de los params(de un sport)
+    try {
+            const { id } = req.params;
+            //buscamos el sport por su id
+            //y populamos los athletes
+            const sportById = await Sport.findById(id).populate("athletes");
+            //Hacemos un condicional. Si existe es que lo ha encontrado =>200
+            //Si no existe error
+
+            if(sportById) {
+                return res.status(200).json(sportById)
+
+            } else {
+                return res.status(404).json("No se ha encontrado el sport");
+            };        
+    } catch (error) {
+        return res.status(409).json({
+            error:"Error al buscar por id", 
+            message:error.message})        
+    }
+};
 
 // --------------------------------------------------------
 //?-----------------GET BY NAME ---------------------------
 // --------------------------------------------------------
 
-
+const getByName = async(req, res, next) => {
+    try {
+        //Hacemos destructuring del name traido por params
+        //Y buscamos el sport que coincide con el name
+        const { name } = req.params;
+        const sportByName = await Sport.find({name});
+        console.log("array", sportByName);
+        //El find me devuelve un array con los sport que tienen ese name
+        //Si su longitud es >o la respuesta es correcta
+        if(sportByName.length > 0) {
+            return res.status(200).json(sportByName)
+        } else {
+            return res.status(404).json("No se ha encontrado el sport")
+        };        
+        
+    } catch (error) {
+        return res.status(409).json({
+            error: "Error general al buscar",
+            message: error.message});
+    }
+};
 
 // --------------------------------------------------------
-//?------------------GET BY id ----------------------------
+//?-----------------GET BY OLIMPICO------------------------
 // --------------------------------------------------------
 
+//como un getall, no hace falta meter nada por params
+//tendre que hacer un filtro en e el que diga que olimpico sea true
+//tambien cn un find, pero no es aqui sino en los sports
+const getOlympics = async(req, res, next) => {
+    try {
+        // Traemos todos los elementos de la coleccion
+        const allSports = await Sport.find();
+        console.log("allSports", allSports);
+        // Find nos devuelve un array con todos los elementos coincidentes
+        //Hago un condicional en el que me devuelve todos en los que el booleano olimpico sea true
+        //Creamos un array vacio donde voy a meter todos los olimpicos
+        const olympics = [];
 
 
-
-
+       allSports.forEach((sport) => {
+        if(sport.olimpico === true) {
+            olympics.push(sport);
+        }        
+       });
+        //console.log("olimpics" , olympics);
+        if(olympics.length > 0) {
+            return res.status(200).json(olympics);
+        } else {
+            return res
+            .status(404)
+            .json("No se ha encontrado nigún deporte olímpico")
+        };   
+       
+    } catch (error) {
+        return res.status(409)
+        .json({
+            error: "Error general al buscar olímpicos",
+            message: error.message})
+        
+    }
+};
 
 
 // --------------------------------------------------------
@@ -209,5 +286,8 @@ const getAllSports = async(req, res, next) => {
 module.exports = {
     createSport,
     toogleAthletes,
-    getAllSports
+    getAllSports,
+    getByIdSport,
+    getByName,
+    getOlympics
 };

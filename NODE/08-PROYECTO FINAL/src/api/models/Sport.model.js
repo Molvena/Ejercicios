@@ -13,7 +13,7 @@ const SportSchema = new Schema({
     olimpico: {
         type: Boolean,
         default: true,
-        //sera false hasta que definamos lo contrario
+        //sera true hasta que definamos lo contrario
       },
     image: {type: String, required: false},
     competicionesDestacadas:{type:String, required:false},

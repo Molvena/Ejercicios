@@ -31,15 +31,15 @@ const upload = multer({storage});
 //Esta la copiamos directamente(nos viene dada)
 
 const deleteImgCloudinary = (imgUrl) => {
-    const imgSplited = imgUrl.split("/");
-    const nameSplited = imgSplited[imgSplited.length - 1].split(".");
-    const folderSplited = imgSplited[imgSplited.length - 2];
-    const public_id = `${folderSplited}/${nameSplited[0]}`;
-  
-    cloudinary.uploader.destroy(public_id, () => {
-      console.log("Image delete in cloudinary");
-    });
-  };
+  const imgSplited = imgUrl.split("/");
+  const nameSplited = imgSplited[imgSplited.length - 1].split(".");
+  const folderSplited = imgSplited[imgSplited.length - 2];
+  const public_id = `${folderSplited}/${nameSplited[0]}`;
+
+  cloudinary.uploader.destroy(public_id, () => {
+    console.log("Image delete in cloudinary");
+  });
+};
 
   //Hacemos la función de configuración de cloudinary
   //que es la que usa las variables de entorno

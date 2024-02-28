@@ -11,7 +11,12 @@ const  {
     autoLogin,
     changePassword,
     updateUser,
-    deleteUser
+    deleteUser,
+    addFavoriteComment,
+    addFavoriteAthlete,
+    addFavoriteSport,
+    addFollow,
+    getAllUsers
 } = require("../controllers/User.controllers");
 
 const UserRoutes = require("express").Router();
@@ -27,10 +32,17 @@ UserRoutes.post("/autoLogin", autoLogin);
 
 UserRoutes.patch("/forgotPassword", forgotPassword); // redirect sendPassword
 
+UserRoutes.get("/getAll", getAllUsers); 
+
 //Rutas autenticadas
 UserRoutes.patch("/changePassword", [isAuth], changePassword);
 UserRoutes.patch("/update", [isAuth], upload.single("image"), updateUser);
 UserRoutes.delete("/delete", [isAuth], deleteUser);
+UserRoutes.patch("/addLikeComment/:idComment", [isAuth], addFavoriteComment);
+UserRoutes.patch("/addLikeAthlete/:idAthlete", [isAuth], addFavoriteAthlete);
+UserRoutes.patch("/addLikeSport/:idSport", [isAuth], addFavoriteSport);
+UserRoutes.patch("/addFollow/:idFollowed", [isAuth], addFollow);
+
 
 
 

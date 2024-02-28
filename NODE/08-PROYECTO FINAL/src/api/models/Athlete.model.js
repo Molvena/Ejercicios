@@ -1,4 +1,4 @@
-//Aqui de finimos los modelos, que son las estructuras
+//Aqui definimos los modelos, que son las estructuras
 //de nuestras colecciones
 
 //Requerimos mongoose
@@ -37,7 +37,7 @@ const AthleteSchema = new Schema(
 
     },
     {
-        timestamps:true,
+        timestamps:true, 
     }
 );
 

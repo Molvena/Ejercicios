@@ -4,7 +4,13 @@ const { upload } = require("../../middleware/files.middleware");
 //Importamos los controladores 
 
 const {
-     createAthlete,  getAllAthletes, updateAthlete, toogleSport, getByIdAthlete,
+     createAthlete,  
+     getAllAthletes, 
+     updateAthlete, 
+     toogleSport, 
+     getByIdAthlete, 
+     getByCountry, 
+     addActivo,
      } = require("../controllers/Athlete.controllers");
 
 //Nos traemos express, para poder usar router express
@@ -27,5 +33,7 @@ AthleteRouter.get("/getAllAthletes", getAllAthletes);
 AthleteRouter.patch("/update/:id", upload.single("image"), updateAthlete);
 AthleteRouter.patch("/toogleSport/:id", toogleSport);
 AthleteRouter.get("/getById/:id", getByIdAthlete);
+AthleteRouter.get("/getByCountry/:country", getByCountry);
+AthleteRouter.patch("/toogleActivo/:idAthlete", addActivo);
 
 module.exports = AthleteRouter;

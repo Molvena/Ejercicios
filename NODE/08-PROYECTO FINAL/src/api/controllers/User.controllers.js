@@ -9,6 +9,9 @@ const {deleteImgCloudinary} = require("../../middleware/files.middleware");
 const { generateToken } = require("../../utils/token");
 const randomPassword = require("../../utils/randomPassword");
 const enumOk = require("../../utils/enumOk");
+const Comment = require("../models/Comment.model");
+const Athlete = require("../models/Athlete.model");
+const Sport = require("../models/Sport.model");
 
 
 // --------------------------------------------------------
@@ -94,8 +97,12 @@ const registerWithRedirect = async (req, res, next) => {
         //Error en el registro
     };
 
+
+// --------------------------------------------------------
+//?---------SEND CODE CONFIRMATION (redirect) -------------
+// --------------------------------------------------------
     //HACEMOS LA FUNCIÓN QUE ENVIA EL CODIGO DE CONFIRMACIÓN.
-    //----SEND CODE CONFIRMATION (redirect)
+   
     //Y que metemos en el redirect
 
     const sendCode = async (req, res, next) => {
@@ -153,7 +160,11 @@ const registerWithRedirect = async (req, res, next) => {
         }
       };
 
-//?----RESEND CODE
+
+// --------------------------------------------------------
+//?---------------------- RESEND CODE----------------------
+// --------------------------------------------------------
+
 //Por si se quiere volver a enviar el código de confirmación
 
 const resendCode = async (req, res, next) => {
@@ -208,8 +219,10 @@ const resendCode = async (req, res, next) => {
   }
 };
     
-//?----CHECK NEW USER
-//
+
+// --------------------------------------------------------
+//?----------------------CHECK NEW USER -------------------
+// --------------------------------------------------------
 
 const checkNewUser = async (req,res,next) => {
 
@@ -282,8 +295,10 @@ const checkNewUser = async (req,res,next) => {
   }
 };
 
-//?----LOGIN
 
+// --------------------------------------------------------
+//?---------------------- LOGIN ---------------------------
+// --------------------------------------------------------
 
 const login = async(req, res, next) =>{
   try{
@@ -331,7 +346,10 @@ const login = async(req, res, next) =>{
   };
 };
 
-//?----AUTOLOGIN
+// --------------------------------------------------------
+//?---------------------- AUTOLOGIN -----------------------
+// --------------------------------------------------------
+
 //Despues de checkear se nos va a loguear automáticamente
 //La diferencia con el login es que aquí se comparan dos contraseñas encriptadas
 //por lo que no hace falta llamar al bcrypt
@@ -379,7 +397,10 @@ const autoLogin = async (req, res, next) => {
   }
 };
 
-//?----FORGOT PASSWORD
+// --------------------------------------------------------
+//?----------------- FORGOT PASSWORD ----------------------
+// --------------------------------------------------------
+
 //CAMBIO DE CONTRASEÑA CUANDO NO ESTAS LOGUEADO
 //por olvido
 //Antes tenemos que crear randomPassword en utils
@@ -413,7 +434,11 @@ const forgotPassword = async(req, res, next) => {
   }
 };
 
-//----SEND PASSWORD (redirect)
+
+// --------------------------------------------------------
+//?---------------- SEND PASSWORD (redirect)---------------
+// --------------------------------------------------------
+
 //Hacemos la función que envía la nueva contraseña
 //Y que metemos en el redirect
 
@@ -524,7 +549,11 @@ const sendPassword = async (req, res, next) => {
   }
 };
 
-//?----GHANGE PASSWORD (una vez logueado)-----> Autenticada
+
+// --------------------------------------------------------
+//?------------------GHANGE PASSWORD ----------------------
+// --------------------------------------------------------
+//?---- (una vez logueado)-----> Autenticada
 //El usuario mete la clave antigua y la nueva para cambiarla
 const changePassword = async (req, res, next) =>{
   try {
@@ -590,7 +619,11 @@ const changePassword = async (req, res, next) =>{
   }
 };
 
-//?----UPDATE-----> Autenticada
+
+// --------------------------------------------------------
+//?---------------------- UPDATE --------------------------
+// --------------------------------------------------------
+//?---------> Autenticada
 //Actualizamos los datos del usuario
 
 const updateUser = async (req, res, next) =>{
@@ -728,9 +761,11 @@ const updateUser = async (req, res, next) =>{
 };
 
 
+// --------------------------------------------------------
+//?---------------------- DELETE --------------------------
+// --------------------------------------------------------
 
-
-//?----DELETE-----> Autenticada
+//?---------> Autenticada
 //El usuario que hace la petición se borra a sí mismo
 
 const deleteUser = async (req, res, next) =>{
@@ -763,6 +798,406 @@ const deleteUser = async (req, res, next) =>{
   }
 };
 
+// --------------------------------------------------------
+//?-------------- TOOGLE LIKE COMMENT ---------------------
+// --------------------------------------------------------
+//?---------> Autenticada
+
+const addFavoriteComment = async (req, res, next) => {
+  try {
+    //Que vamos a actualizar?
+    //1)Comment --> Array de likes 
+      //Necesitamos el id del comment (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+    //2)User --> Array de comments fav
+      //Necesitamos el id del comment (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+
+    //Desectructuramos el id del comment que recibimos por params
+    //Despues tendremos que añadir al path ".../:idComment"
+    const  { idComment } = req.params;
+
+    //Desectructuramos el id del user que recibimos por el middleware
+    //y su array de commentsFav
+    const { _id, commentsFav } = req.user;
+
+    //Ahora tenemos que ver si este id del comentario esta incluido
+    //en el array de commentsFav del user--->
+    //Si lo esta, lo sacamos
+    //Si no lo esta lo metemos
+    
+    if (commentsFav.includes(idComment)) {
+      //Si está lo sacamos (buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del comment
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$pull: { commentsFav: idComment}}
+          );
+          //console.log("commentsFav",commentsFav);
+        await Comment.findByIdAndUpdate(idComment,
+          {$pull: {likes: _id},}
+        );
+        console.log("commentsFav",commentsFav);
+
+        return res.status(200).json({
+          userUpdate : await User.findById(_id).populate("commentsFav"),
+        
+          likesUpdate : await Comment.findById(idComment)
+          .populate("likes"),
+        })
+        //commentsFav.pull(idComment) 
+      } catch (error) {
+        //error al sacar el comentario del commentsFav
+        return res.status(409)
+        .json({
+          error: "Error al sacar el like",
+          message:error.message
+        });
+      }     
+    } else {
+      //Si no lo esta lo metemos(buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del comment
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$push: { commentsFav: idComment}}
+          );
+        await Comment.findByIdAndUpdate(idComment,
+          {$push: { likes: _id}}
+        );
+
+        return res.status(200)
+        .json({
+          userUpdate: await User.findById(_id)
+          .populate("commentsFav"),
+        
+          likesUpdate : await Comment.findById(idComment)
+          .populate("likes")
+        })
+        
+      } catch (error) {
+        //error al meter el comentario del commentsFav
+        return res.status(409)
+        .json({
+          error: "Error al añadir el like",
+          message:error.message
+        });
+      }  
+    }    
+  } catch (error) {
+    //error general en el like del comment
+    return res.status(409).json({
+      error: "Error general en el like del comment",
+      message: error.message,
+    });
+
+  }
+};
+
+// --------------------------------------------------------
+//?-------------- TOOGLE LIKE ATHLETE ---------------------
+// --------------------------------------------------------
+//?---------> Autenticada
+
+const addFavoriteAthlete = async (req, res, next) => {
+  try {
+    //Que vamos a actualizar?
+    //1)Athlete --> Array de likes 
+      //Necesitamos el id del Athlete (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+    //2)User --> Array de Athletes fav
+      //Necesitamos el id del Athletes (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+
+    //Desectructuramos el id del Athlete que recibimos por params
+    //Despues tendremos que añadir al path ".../:idAthlete"
+    const  { idAthlete } = req.params;
+
+    //Desectructuramos el id del user que recibimos por el middleware
+    //y su array de AthletesFav
+    const { _id, athletesFav } = req.user;
+
+    //Ahora tenemos que ver si este id del Athlete esta incluido
+    //en el array de Athletes Fav del user--->
+    //Si lo esta, lo sacamos
+    //Si no lo esta lo metemos
+    
+    if (athletesFav.includes(idAthlete)) {
+      //Si está lo sacamos (buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del athletes
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$pull: { athletesFav: idAthlete}}
+          );
+          
+        await Athlete.findByIdAndUpdate(idAthlete,
+          {$pull: {likes: _id},}
+        );
+        console.log("athletesFav",athletesFav);
+
+        return res.status(200).json({
+          userUpdate : await User.findById(_id).populate("athletesFav"),
+        
+          likesUpdate : await Athlete.findById(idAthlete)
+          .populate("likes"),
+        })
+        
+      } catch (error) {
+        //error al sacar el athlete del athletesFav
+        return res.status(409)
+        .json({
+          error: "Error al sacar el like",
+          message:error.message
+        });
+      }     
+    } else {
+      //Si no lo esta lo metemos(buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del athlete
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$push: { athletesFav: idAthlete}}
+          );
+        await Athlete.findByIdAndUpdate(idAthlete,
+          {$push: { likes: _id}}
+        );
+
+        return res.status(200)
+        .json({
+          userUpdate: await User.findById(_id)
+          .populate("athletesFav"),
+        
+          likesUpdate : await Athlete.findById(idAthlete)
+          .populate("likes")
+        })
+        
+      } catch (error) {
+      
+        return res.status(409)
+        .json({
+          error: "Error al añadir el like",
+          message:error.message
+        });
+      }  
+    }    
+  } catch (error) {
+    //error general en el like del athlete
+    return res.status(409).json({
+      error: "Error general en el like del athlete",
+      message: error.message,
+    });
+
+  }
+};
+
+// --------------------------------------------------------
+//?-------------- TOOGLE LIKE SPORT ---------------------
+// --------------------------------------------------------
+//?---------> Autenticada
+
+const addFavoriteSport = async (req, res, next) => {
+  try {
+    //Que vamos a actualizar?
+    //1)Sport --> Array de likes 
+      //Necesitamos el id del Sport (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+    //2)User --> Array de sportFav
+      //Necesitamos el id del Sport (req.params)
+      //Necesitamos el id del User-->middleware del user (req.user._id)
+
+    //Desectructuramos el id del Sport que recibimos por params
+    //Despues tendremos que añadir al path ".../:idSport"
+    const  { idSport } = req.params;
+
+    //Desectructuramos el id del user que recibimos por el middleware
+    //y su array de SportFav
+    const { _id, sportsFav } = req.user;
+
+    //Ahora tenemos que ver si este id del Sport esta incluido
+    //en el array de Sport Fav del user--->
+    //Si lo esta, lo sacamos
+    //Si no lo esta lo metemos
+    
+    if (sportsFav.includes(idSport)) {
+      //Si está lo sacamos (buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del Sport
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$pull: { sportsFav: idSport}}
+          );
+          
+        await Sport.findByIdAndUpdate(idSport,
+          {$pull: {likes: _id},}
+        );
+        console.log("sportsFav",sportsFav);
+
+        return res.status(200).json({
+          userUpdate : await User.findById(_id).populate("sportsFav"),
+        
+          likesUpdate : await Sport.findById(idSport).populate("likes"),
+        })
+        
+      } catch (error) {
+        //error al sacar el sporte del sportsFav
+        return res.status(409)
+        .json({
+          error: "Error al sacar el like",
+          message:error.message
+        });
+      }     
+    } else {
+      //Si no lo esta lo metemos(buscar y actualizar user)
+      //Tenemos tb que actualizar el id de likes del sport
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$push: { sportsFav: idSport}}
+          );
+        await Sport.findByIdAndUpdate(idSport,
+          {$push: { likes: _id}}
+        );
+
+        return res.status(200)
+        .json({
+          userUpdate: await User.findById(_id)
+          .populate("sportsFav"),
+        
+          likesUpdate : await Sport.findById(idSport)
+          .populate("likes")
+        })
+        
+      } catch (error) {
+      
+        return res.status(409)
+        .json({
+          error: "Error al añadir el like",
+          message:error.message
+        });
+      }  
+    }    
+  } catch (error) {
+    //error general en el like del sport
+    return res.status(409).json({
+      error: "Error general en el like del sport",
+      message: error.message,
+    });
+
+  }
+};
+
+// --------------------------------------------------------
+//?-------------- TOOGLE FOLLOW ---------------------
+// --------------------------------------------------------
+//?---------> Autenticada
+
+const addFollow = async (req, res, next) => {
+  try {
+    //Que vamos a actualizar?
+    //1)User seguido(user 2)--> En su Array de followers
+      //Necesitamos el id del seguido (U2) (req.params)
+      //Necesitamos el id del seguidor(U1)-->middleware del user (req.user._id)
+    //2)User que sigue(user 1)--> En su Array de followed
+      //Necesitamos el id del seguido(U2) (req.params)
+      //Necesitamos el id del seguidor(U1)-->middleware del user (req.user._id)
+
+    //Desectructuramos el id del followed que recibimos por params (U2)
+    //Despues tendremos que añadir al path ".../:idFollowed"
+    
+    const  { idFollowed } = req.params;
+
+    //Desectructuramos el id del user (U1) que recibimos por el middleware
+    //y su array de commentsFav
+    const { _id, followed } = req.user;
+
+    //Ahora tenemos que ver si este id del U2 esta incluido
+    //en el array de followed del U1--->
+    //Si lo esta, lo sacamos
+    //Si no lo esta lo metemos
+    
+    if (followed.includes(idFollowed)) {
+      //Si está lo sacamos (buscar y actualizar U1 y su array followed)
+      //Tenemos tb que actualizar U2 y su array followers
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$pull: { followed: idFollowed}}
+          );
+          
+        await User.findByIdAndUpdate(idFollowed,
+          {$pull: {followers: _id},}
+        );
+        
+        return res.status(200).json({
+          userFollowedUpdate : await User.findById(_id).populate("followed"),
+        
+          serFollowerUpdate : await User.findById(idFollowed).populate("followers"),
+        })
+      
+      } catch (error) {
+        
+        return res.status(409)
+        .json({
+          error: "Error al dejar de seguir",
+          message:error.message
+        });
+      }     
+    } else {
+      //Si no está lo metemos (buscar y actualizar U1 y su array followed)
+      //Tenemos tb que actualizar U2 y su array followers
+      try {
+        await User.findByIdAndUpdate(_id,
+          {$push: { followed: idFollowed}}
+          );
+          
+        await User.findByIdAndUpdate(idFollowed,
+          {$push: {followers: _id},}
+        );
+        
+        return res.status(200).json({
+          userFollowedUpdate : await User.findById(_id).populate("followed"),
+        
+          serFollowerUpdate : await User.findById(idFollowed).populate("followers"),
+        })
+      
+      } catch (error) {
+        
+        return res.status(409)
+        .json({
+          error: "Error al seguir",
+          message:error.message
+        });
+      } 
+    }    
+  } catch (error) {
+       return res.status(409).json({
+      error: "Error general al seguir o dejar de seguir a un usuario",
+      message: error.message,
+    });
+
+  }
+};
+
+// --------------------------------------------------------
+//?-----------------------------GET ALL -------------------
+// --------------------------------------------------------
+const getAllUsers = async (req, res, next) => {
+  //Traemos todos los elementos con .find()
+  //que nos devuelve un array con todos los elementos coincidentes
+  try {
+      const allUsers = await User.find();
+      //Si el array se ha llenado lanzamos respuesta correcta
+      //y el array con todos los users    
+      if(allUsers.length >0) {
+          return res.status(200).json(allUsers);
+      } else {
+      //error no se ha llenado el array
+      return res.status(404).json("No se han encontrado Users");
+      };
+  } catch (error) {
+      return res.status(409).json({
+          error: "Error al buscar Users",
+          message: error.message
+      });
+  }    
+};
+
+
 
       module.exports = {
         registerWithRedirect,
@@ -775,5 +1210,10 @@ const deleteUser = async (req, res, next) =>{
         forgotPassword,
         changePassword,
         updateUser,
-        deleteUser
+        deleteUser,
+        addFavoriteComment,
+        addFavoriteAthlete,
+        addFavoriteSport,
+        addFollow,
+        getAllUsers
       }

@@ -96,7 +96,7 @@ const getAllAthletes = async (req, res, next) => {
 };
 
 // --------------------------------------------------------
-//?---------------TOOGLE AÑADIR DEPORTE -------------------
+//?---------------TOOGLE AÑADIR SPORT -------------------
 // --------------------------------------------------------
 //Hacemos un Toggle Sport para  meter o quitar Sports del Athlete
 
@@ -138,7 +138,7 @@ const toogleSport = async (req, res, next) => {
                             try {
                                 //buscamos el sport y le quitamos el athlete
                                 await Sport.findByIdAndUpdate(sport, {
-                                    $pull: {athlete: id}
+                                    $pull: {athletes: id}
                                 });                                
                             } catch (error) {
                                 //sport no actualizado
@@ -207,6 +207,7 @@ const toogleSport = async (req, res, next) => {
 
 const updateAthlete = async (req, res, next) => {
     try {
+        console.log("dentro");
         //comprobamos si en la solicitud hay una imagen
         //si la hay nos la pueden cambiar
         //ponemos el optional chaining para que no rompa si no la hay
@@ -220,7 +221,7 @@ const updateAthlete = async (req, res, next) => {
         const { id } = req.params;
 
         //Buscamos el Athlete una vez que tenemos el id
-        const athleteById = Athlete.findById(id);
+        const athleteById = await Athlete.findById(id);
         
         //Si existe el elemento se puede actualizar
         if (athleteById) {
@@ -258,6 +259,7 @@ const updateAthlete = async (req, res, next) => {
                 //Para ello usamos findByIdAndUpdate
                 try {
                     await Athlete.findByIdAndUpdate(id,bodyCustom);
+                    console.log(oldImg);
 
                     //si se ha actualizado la imagen borramos la antigua
                     //siempre que sea diferente a la por defecto
@@ -302,6 +304,7 @@ const updateAthlete = async (req, res, next) => {
                         (test = {...test, file: true}) :
                         (test = {...test, file : false})
                        };
+                       console.log("test", test);
 
                        //hacemos un contador para comprobar que ninguna clave esta en false
                        //recorremos el test con un for in porque es un objeto
@@ -375,8 +378,86 @@ const getByIdAthlete = async(req,res,next) => {
 };
 
 // --------------------------------------------------------
-//?-----------------GET BY NATIONALITY --------------------
+//?-----------------GET BY COUNTRY ------------------------
 // --------------------------------------------------------
+
+const getByCountry = async(req, res, next) => {
+    try {
+       //Hacemos destructuring del pais traido por params 
+       //y buscamos el pais que coincide
+       const { country } = req.params;
+       const athleteByCountry = await Athlete.find({country});
+       //El find me devuelve un array con los athletes que tienen ese country
+        //Si su longitud es >o la respuesta es correcta
+        if(athleteByCountry.length > 0) {
+            return res.status(200).json(athleteByCountry)
+        } else {
+            return res.status(404).json("No se ha encontrado el athlete")
+        };    
+
+    } catch (error) {
+        return res.status(409).json({
+            error: "Error general al buscar",
+            message: error.message});
+    }
+};
+
+// --------------------------------------------------------
+//?-------------- TOOGLE ACTIVO/NO ACTIVO -----------------
+// --------------------------------------------------------
+
+const addActivo = async(req, res, next) => {
+    try {
+        //desectructuramos el id del athlete traido por params
+        const {idAthlete} = req.params;
+
+        //Busco al athlete por su id
+        const findAthlete = await Athlete.findById(idAthlete);
+        
+
+        //si esta activo lo actualizo poniendolo no activo
+
+        if(findAthlete.activo === true) {
+            try {
+                await Athlete.findByIdAndUpdate(idAthlete, {activo: false});
+                    return res
+                    .status(200)
+                    .json({findAthlete: await Athlete.findById(idAthlete)});
+            } catch (error) {
+                return res.status(409)
+                .json({
+                  error: "Error al pasar el athlete a activo",
+                  message:error.message
+                });                
+            };
+        } else {
+            try {
+                await Athlete.findByIdAndUpdate(idAthlete, {activo: true});
+                    return res
+                    .status(200)
+                    .json({findAthlete: await Athlete.findById(idAthlete)});
+            } catch (error) {
+                return res.status(409)
+                .json({
+                  error: "Error al pasar el athlete a no activo",
+                  message:error.message
+                });                
+            };
+        };   
+        
+    } catch (error) {
+        return res.status(409)
+        .json({
+          error: "Error al actualizar activo/no activo el athlete",
+          message:error.message
+        });        
+    }
+};
+
+
+
+
+
 
 
 
@@ -385,5 +466,7 @@ module.exports = {
     getAllAthletes,
     updateAthlete,
     toogleSport,
-    getByIdAthlete
+    getByIdAthlete,
+    getByCountry,
+    addActivo
 };
