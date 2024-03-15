@@ -255,8 +255,123 @@ const getAllComments = async(req, res, next) => {
 //?---------------------- DELETE --------------------------
 // --------------------------------------------------------
 
+const deleteComment =async (req, res, next) => {
+    try {
+        //obtenemos el id de los params
+        const { id } = req.params;
+        //buscamos el Comment
+        const commentDB = await Comment.findById(id);
+        //Vemos si existe para boorarlo
+        if(commentDB) {
+            await Comment.findByIdAndDelete(id);
+            //Lo comprobamos. 
+            //Lo buscamos y si no existe actualizamos los registros correspondientes
+                //Owner                
+                //Users que le han dado a like al comment
+                //user, sport o athlete a quien va dirigido el comment
+                const commentDelete =  await Comment.findById(id);
+                
+                if(!commentDelete) {
+                    try {
+                         //Owner
+                        await User.findByIdAndUpdate(commentDB.owner, {
+                            $pull: { postedComments: id }
+                        });
+                        try {
+                             //Users que le han dado a like al comment
+                            await User.updateMany(
+                                {commentsFav: id},
+                                {$pull: {commentsFav: id}}
+                                );
+                                try {
+                                    //user, sport o athlete a quien va dirigido el comment
+                                    await User.findByIdAndUpdate(commentDB.recipientUser, {
+                                      $pull: { commentsByOthers: id },
+                                    });
+                        
+                                    try {
+                                      await Athlete.findByIdAndUpdate(commentDB.recipientAthlete, {
+                                        $pull: { comments: id },
+                                      });
+                        
+                                      try {
+                                        await Sport.findByIdAndUpdate(commentDB.recipientSport, {
+                                          $pull: { comments: id },
+                                        });
+                        
+                                        return res.status(200).json("Comment borrado");
+                                      } catch (error) {
+                                        return res.status(409).json({
+                                          error:
+                                            "Error al actualizar el Sport que ha recibido el Comment",
+                                          message: error.message,
+                                        });
+                                      }
+                                    } catch (error) {
+                                      return res.status(409).json({
+                                        error:
+                                          "Error al actualizar el athlete que ha recibido el Comment",
+                                        message: error.message,
+                                      });
+                                    }
+                                  } catch (error) {
+                                    return res.status(409).json({
+                                      error:
+                                        "Error al actualizar el user que ha recibido el Comment",
+                                      message: error.message,
+                                    });
+                                  };                               
+                            
+                        } catch (error) {
+                            //Error al actualizar los likes a este comment
+                            return res.status(409).json({
+                                error: "Error al actualizar al User que ha dado like al Comment",
+                                message: error.message,
+                              });
+                        }
+                        
+                    } catch (error) {
+                        //Error al actualizar el owner
+                        return res.status(409).json({
+                            error: "Error al actualizar al owner",
+                            message: error.message,
+                          });
+                    }
+                } else {
+                    //el comentario no se ha borrado
+                    return res.status(409).json({
+                        error: "Error al borrar el Comment",
+                        message: "Comment no borrado",
+                      });
+                };
+
+        } else {
+            //el comentario no existe
+            return res.status(409).json({
+                error: "Error, el Comment no existe",
+                message: "El Comment no existe",
+              });
+
+        };
+
+
+
+
+
+
+    } catch (error) {
+        //error general al borrar el comment
+        return res
+        .status(409)
+        .json({ error: "Error al borrar el comentario", message: error.message });
+    }
+};
+
+
+
 module.exports = {
     createComment,
-    getAllComments
+    getAllComments,
+    deleteComment
 };
 

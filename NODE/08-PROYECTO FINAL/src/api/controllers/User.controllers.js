@@ -769,6 +769,43 @@ const updateUser = async (req, res, next) =>{
 //El usuario que hace la petición se borra a sí mismo
 
 const deleteUser = async (req, res, next) =>{
+  //Antes de borrar al user vamos a almacenar todos los comentarios
+  //que ha hecho este user y que le han hecho a el en un array
+  //Recorreremos este array para actualizar users,athletes y sports
+  //donde aparezcan los comentarios
+
+  const allComments = [];
+
+  //Recorremos comentarios de otros y por cada uno 
+  //lo añadimos tb al array
+  req.user.commentsByOthers.forEach((comment) => {
+    allComments.push(comment);
+  });
+    //Recorremos comentarios de otros y por cada uno 
+    //lo añadimos tb al array
+
+    req.user.postedComments.forEach((comment) => {
+      allComments.push(comment);
+    });
+    console.log("allComments", allComments);
+    //  Al borrar un user tendremos que actualizar:
+    // 1) Registros de Sport que en su campo de likes tengan el id de este user borrado 
+    // 2) Registros de Athlete que en su campo de likes tengan el id de este user borrado 
+    // 3) Registros de User que en su campo de followers tengan el id de este user borrado 
+    // 4) Registros de User que en su campo de followed tengan el id de este user borrado 
+    // Sacamos el id de estos campos mediante ------- $pull
+    // Comments
+    // 5) Borramos Registros de Comment que en su campo de recipientUser tengan el id de este user borrado
+    // 6) Borramos Registros de Comment que en su campo de owner tengan el id de este user borrado
+    // 7) Actualizamos:
+    //    users, athletes y sports que tienen comentarios de este user
+    //    A los owners de los comentarios dirigidos a este user
+    //    A los users que le han dado like a esos comentarios
+    //    A los Comment que en su campo de likes tengan el id de este user borrado 
+    
+    
+
+
   //Buscamos al user por id y lo borramos
   try{
     await User.findByIdAndDelete(req.user._id);
@@ -783,12 +820,146 @@ const deleteUser = async (req, res, next) =>{
       req.user.image !== "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1706383271/Curso/g9xrmbndjzckzsblvx8g.jpg"
       && deleteImgCloudinary(req.user.image);
 
-      return res.status(200).json("User borrado");
+      //Actualizamos
+      try {
+        // 1) Registros de Sport que en su campo de likes tengan el id de este user borrado
+        // La condicion es que en el campo de like aparezca el id del user
+        // La accion es sacar del campo de likes este id
+        await Sport.updateMany(
+          { likes: req.user._id},
+          { $pull: {likes: req.user._id}}
+        );
+        try {
+          // 2) Registros de Athlete que en su campo de likes tengan el id de este user borrado
+
+          await Athlete.updateMany(
+            { likes: req.user._id},
+            {$pull: {likes: req.user._id}}
+          );
+          try {
+            // 3) Registros de User que en su campo de followers tengan el id de este user borrado
+             await User.updateMany(
+              {followers: req.user._id},
+              {$pull: {followers: req.user._id}}
+             );
+             try {
+              // 4) Registros de User que en su campo de followed tengan el id de este user borrado 
+              await User.updateMany(
+                {followed: req.user._id},
+                {$pull: {followed: req.user._id}}
+              );
+              try {
+                // 5) Borramos Registros de Comment que en su campo de recipientUser tengan el id de este user borrado 
+                // 6) Borramos Registros de Comment que en su campo de owner tengan el id de este user borrado
+                
+                await Comment.deleteMany(
+                  {recipientUser: req.user._id}
+                );
+                await Comment.deleteMany(
+                  {owner: req.user._id}
+                );
+
+                try {
+                   // A los Comment que en su campo de likes tengan el id de este user borrado
+                   await Comment.updateMany(
+                   {likes: req.user._id},
+                   {$pull: {likes: req.user._id}}
+                   );
+                  
+               
+               
+                    // 7) Actualizamos por cada comentario
+                    //    users, athletes y sports que tienen comentarios de este user borrado 
+                    //    Users que han hecho comentarios de este user borrado                 
+                    //    A los owners de los comentarios dirigidos a este user
+                    //    A los users que le han dado like a esos comentarios                    
+
+                    // Hacemos promise.all porque hay que recorrer el array de los comentarios
+                    // y por cada uno realizar una serie de acciones:
+                    // actualizar registros donde aparece este id
+                    // Hasta que no hagas todo lo de dentro de la promesa no continues
+                    
+                    Promise.all(
+                      //recorremos el id de comentarios
+                      allComments.map(async (comment) => {
+                        //users que tienen comentarios de este user   
+                        await User.updateMany(
+                          {commentsByOthers: comment},
+                          {$pull: {commentsByOthers: comment}}
+                        );
+                        // athletes que tienen comentarios de este user  
+                        await Athlete.updateMany(
+                          {comments: comment},
+                          {$pull: {comments: comment}}
+                        );
+                        // sports que tienen comentarios de este user  
+                        await Sport.updateMany(
+                          {comments: comment},
+                          {$pull: {comments: comment}}
+                        );
+                        //Users que han hecho comentarios de este user borrado
+                        await User.updateMany(
+                          {postedComments: comment},
+                          {$pull: {postedComments: comment}}
+                        );
+                        // A los users que le han dado like a esos comentarios
+                        await User.updateMany(
+                          {commentsFav: comment},
+                          {$pull: {commentsFav: comment}}
+                        );
+                      })
+                  
+                    ).then(async () => {
+                      return res.status(200).json("User borrado");
+                    });
+                  } catch (error) {
+                  //error al borrar el like del user borrado de un comment
+                  return res.status(409).json({
+                    error: "Error borrando like a un comment del user borrado",
+                    message: error.message,
+                  });
+                  };
+              } catch (error) {
+                //error al borrar los comentarios hechos o dirigidos a este user
+                return res.status(409).json({
+                  error: "Error al borrar los comentarios hechos o dirigidos a este user",
+                  message: error.message,
+                });
+              };
+              
+             } catch (error) {
+              //Error al actualizar los followed (los que le seguían)
+              return res.status(409).json({
+                error: "Error al actualizar los followed (los que le seguían)",
+                message: error.message,
+              });              
+             };            
+          } catch (error) {
+            //Error al actualizar los followers( a los que seguía)
+            return res.status(409).json({
+              error: "Error al actualizar los followers (a los que le seguía)",
+              message: error.message,
+            });
+          };
+        } catch (error) {
+          //Error actualizando Athlete
+          return res.status(409).json({
+            error: "Error al actualizar Athletes",
+            message: error.message,
+          });
+        };        
+      } catch (error) {
+        //Error actualizando Sports
+        return res.status(409).json({
+          error: "Error al actualizar Sports",
+          message: error.message,
+        });
+      };
+
+      
     } else {
       return res.status(409).json({error: "Error al borrar al usuario"})
-    }
- 
-
+    };
   } catch {
     //Error general al borrar el user
     return res.status(409).json({
@@ -1215,5 +1386,6 @@ const getAllUsers = async (req, res, next) => {
         addFavoriteAthlete,
         addFavoriteSport,
         addFollow,
-        getAllUsers
+        getAllUsers,
+      
       }

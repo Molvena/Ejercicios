@@ -14,7 +14,9 @@ const enumOk = require("../../utils/enumOk");
 //Nos traemos los modelos
 
 const Athlete = require("../models/Athlete.model");
+const Comment = require("../models/Comment.model");
 const Sport = require("../models/Sport.model");
+const User = require ("../models/User.model");
 
 
 // --------------------------------------------------------
@@ -454,8 +456,116 @@ const addActivo = async(req, res, next) => {
     }
 };
 
+// --------------------------------------------------------
+//?-------------------- DELETE ----------------------------
+// --------------------------------------------------------
 
+//Borramos el athlete cuyo id traemos por params
 
+const deleteAthlete = async (req, res, next) => {
+  try {
+    
+    const { id } = req.params;
+    
+    //buscamos el athlete
+    const athlete = await Athlete.findById(id);
+    //Comprobamos si existe para borrarlo
+    
+
+    if(athlete) {
+        await Athlete.findByIdAndDelete(id);
+        //Lo buscamos y si no existe
+        //borramos su imagen de cloudinary si es diferente a la por defecto
+        const findAthlete = await Athlete.findById(id);
+        
+        if(!findAthlete) {
+            //console.log("entro", id);
+            //estos console.log los vamos poniendo a ver donde esta el error
+            athlete.image !== "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1707842081/Curso/silueta-atleta-gotas-pintura_23-2147492712_fm3do8.avif"
+             deleteImgCloudinary(athlete.image);
+              //Actualizamos
+            try {
+                //Sports que en su campo de Athletes tengan el id del athlete borrado
+                await Sport.updateMany(
+                    {athletes: id},
+                    {$pull: {athletes: id}}
+                );
+                try {
+                    console.log("entro", id);
+                    //Users que le hayan dado al like al athlete
+                    await User.updateMany(
+                        { athletesFav: id},
+                        { $pull: {athletesFav: id}}                        
+                    );
+                    try {
+                        console.log("entro");  
+                        //Comments que tengan al athlete de recipient athlete ---> lo borramos
+                          await Comment.deleteMany(
+                            {recipientAthlete: id}
+                          );
+                        console.log(athlete.comments);
+                          Promise.all(
+                            //tenemos que hacer una promesa porque recorremos los comentarios y hay una asincronía
+                            //y actualizamos:
+                             //al owner del comentario
+                             //al user que le dio like al comentario
+                            athlete.comments.map(async (comment) => {
+                                await User.updateOne(
+                                    { postedComments: comment },
+                                    { $pull: { postedComments: comment } }
+                                );
+                                await User.updateOne(
+                                    { commentsFav: comment },
+                                    { $pull: {commentsFav: comment }}
+                                );
+                            })
+                          ).then(async () => {
+                            return res.status(200).json("Athlete borrado");
+                          });
+                    } catch (error) {
+                        //Error al borrar el cometario dirigido al athlete
+                        return res.status(409).json({
+                            error: "Error al borrar los Comments",
+                            message: error.message,
+                          });
+                    };                
+                } catch (error) {
+                //error al actualizar el user
+                return res.status(409).json({
+                    error: "Error al actualizar el User",
+                    message: error.message,
+                  });
+                };                
+            } catch (error) {
+               //error al actualizar el sport 
+               return res.status(409).json({
+                error: "Error al actualizar el Sport",
+                message: error.message,
+              });
+            };
+        } else {
+            // El Athlete no se ha borrado
+            return res.status(409).json({
+              error: "Error al borrar el Athlete",
+              message: "Athlete no borrado",
+            });
+          }
+    } else {
+        // El Athlete no existe
+        return res.status(409).json({
+          error: "Error al buscar el Athlete",
+          message: "El Athlete no existe",
+        });
+      }
+
+  }catch (error) {
+    //error general al borrar el athlete
+    return res.status(409).json({
+        error: "Error general al borrar el Athlete",
+        message: error.message,
+      });
+    }                
+  } ;
 
 
 
@@ -468,5 +578,6 @@ module.exports = {
     toogleSport,
     getByIdAthlete,
     getByCountry,
-    addActivo
-};
+    addActivo,
+    deleteAthlete
+}

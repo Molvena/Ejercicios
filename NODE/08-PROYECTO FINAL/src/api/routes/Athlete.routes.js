@@ -1,6 +1,7 @@
 //Nos traemos la funciíon de multer para la subida de ficheros
 
 const { upload } = require("../../middleware/files.middleware");
+const { isAuth } = require("../../middleware/auth.middleware");
 //Importamos los controladores 
 
 const {
@@ -11,6 +12,7 @@ const {
      getByIdAthlete, 
      getByCountry, 
      addActivo,
+     deleteAthlete,
      } = require("../controllers/Athlete.controllers");
 
 //Nos traemos express, para poder usar router express
@@ -35,5 +37,6 @@ AthleteRouter.patch("/toogleSport/:id", toogleSport);
 AthleteRouter.get("/getById/:id", getByIdAthlete);
 AthleteRouter.get("/getByCountry/:country", getByCountry);
 AthleteRouter.patch("/toogleActivo/:idAthlete", addActivo);
+AthleteRouter.delete("/deleteAthlete/:id", [isAuth], deleteAthlete);
 
 module.exports = AthleteRouter;

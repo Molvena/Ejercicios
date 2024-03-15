@@ -6,6 +6,8 @@ const  {deleteImgCloudinary} = require("../../middleware/files.middleware");
 
 const Athlete = require("../../api/models/Athlete.model");
 const Sport = require("../models/Sport.model");
+const User = require("../models/User.model");
+const Comment = require("../models/Comment.model");
 
 // --------------------------------------------------------
 //?------------------------POST CREATE --------------------
@@ -283,11 +285,114 @@ const getOlympics = async(req, res, next) => {
 //?---------------DELETE ----------------------------------
 // --------------------------------------------------------
 
+//Borramos el sport cuyo id traemos por params
+
+const deleteSport = async (req, res, next) => {
+    try {
+  
+      const { id } = req.params;
+      //buscamos el Sport
+      const sport = await Sport.findById(id);
+      //Comprobamos si existe para borrarlo
+  
+      if(sport) {
+          await Sport.findByIdAndDelete(id);
+          //Lo buscamos y si no existe
+          //borramos su imagen de cloudinary si es diferente a la por defecto
+          const findSport = await Sport.findById(id);
+          
+          if(!findSport) {
+              sport.image !== "https://res.cloudinary.com/dkr0cj7oc/image/upload/v1708370591/Foro-virtual-El-deporte-dentro-y-fuera-de-la-cancha-2_quvlx8.jpg"
+               deleteImgCloudinary(sport.image);
+                //Actualizamos
+              try {
+                  //Athletes que en su campo de Sport tengan el id del Sport borrado
+                  await Athlete.updateMany(
+                      {sport: id},
+                      {$pull: {sport: id}}
+                  );
+                  try {
+                      //Users que le hayan dado al like al sport
+                      await User.updateMany(
+                          { sportsFav: id},
+                          { $pull: {sportsFav: id}}                        
+                      );
+                      try {
+                            //Comments que tengan al sport de recipient sport ---> lo borramos
+                            await Comment.deleteMany(
+                              {recipientSport: id}
+                            );
+                          
+                            Promise.all(
+                              //tenemos que hacer una promesa porque recorremos los comentarios y hay una asincronía
+                              //y actualizamos:
+                               //al owner del comentario
+                               //al user que le dio like al comentario
+                              sport.comments.map(async (comment) => {
+                                  await User.updateOne(
+                                      { postedComments: comment },
+                                      { $pull: { postedComments: comment } }
+                                  );
+                                  await User.updateOne(
+                                      { commentsFav: comment },
+                                      { $pull: {commentsFav: comment }}
+                                  );
+                              })
+                            ).then(async () => {
+                              return res.status(200).json("Sport borrado");
+                            });
+                      } catch (error) {
+                          //Error al borrar el cometario dirigido al sport
+                          return res.status(409).json({
+                              error: "Error al borrar los Comments",
+                              message: error.message,
+                            });
+                      };                
+                  } catch (error) {
+                  //error al actualizar el user
+                  return res.status(409).json({
+                      error: "Error al actualizar el User",
+                      message: error.message,
+                    });
+                  };                
+              } catch (error) {
+                 //error al actualizar el Athlete 
+                 return res.status(409).json({
+                  error: "Error al actualizar el Athlete",
+                  message: error.message,
+                });
+              };
+          } else {
+              // El Sport no se ha borrado
+              return res.status(409).json({
+                error: "Error al borrar el Sport",
+                message: "Sport no borrado",
+              });
+            }
+      } else {
+          // El Sport no existe
+          return res.status(409).json({
+            error: "Error al buscar el Sport",
+            message: "El Sport no existe",
+          });
+        }
+  
+    }catch (error) {
+      //error general al borrar el Sport
+      return res.status(409).json({
+          error: "Error general al borrar el Sport",
+          message: error.message,
+        });
+      }                
+    } ;
+
+
 module.exports = {
     createSport,
     toogleAthletes,
     getAllSports,
     getByIdSport,
     getByName,
-    getOlympics
+    getOlympics,
+    deleteSport
 };

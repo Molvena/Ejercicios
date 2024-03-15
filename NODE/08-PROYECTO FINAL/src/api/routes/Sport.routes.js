@@ -10,7 +10,8 @@ const {
     getAllSports, 
     getByIdSport, 
     getByName, 
-    getOlympics 
+    getOlympics, 
+    deleteSport
 } = require("../controllers/Sport.controllers");
 
 const SportRouter = express.Router();
@@ -20,6 +21,7 @@ SportRouter.patch("/toogle/:id",toogleAthletes);
 SportRouter.get("/getAllSports", getAllSports);
 SportRouter.get("/getByIdSport/:id", getByIdSport);
 SportRouter.get("/getByName/:name", getByName);
-SportRouter.get("/getOlympics", getOlympics)
+SportRouter.get("/getOlympics", getOlympics);
+SportRouter.delete("/delete/:id", deleteSport);
 
 module.exports = SportRouter;

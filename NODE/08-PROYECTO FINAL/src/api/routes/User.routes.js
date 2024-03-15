@@ -44,18 +44,10 @@ UserRoutes.patch("/addLikeSport/:idSport", [isAuth], addFavoriteSport);
 UserRoutes.patch("/addFollow/:idFollowed", [isAuth], addFollow);
 
 
-
-
-
-
 //Controladores usados con redirect
 UserRoutes.post("/register/sendMail/:id", sendCode);
 UserRoutes.patch("/forgot/sendPassword/:id", sendPassword);
 //Es un patch porque actualiza al usuario
-
-
-
-
 
 
 
