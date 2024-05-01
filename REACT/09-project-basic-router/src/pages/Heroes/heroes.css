@@ -1,0 +1,9 @@
+.heroes{
+    height: 70vh;
+    width: 100vh;
+    display:flex;
+    flex-direction: column;
+    margin: 10px;
+    background-color: #9a9ae2;
+    justify-content: center;
+}

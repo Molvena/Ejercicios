@@ -1,8 +1,8 @@
-const getDataService = async () => {
-   const data = await getDataPokemonBucle();
-  const types = typePokemon(data);
-  PrintSelectTypePokemon(types, data);
-  listeners(data);
-  printGallery(data);
-};
-
+fetch('https://some-api.com/data')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
