@@ -171,7 +171,7 @@ const toogleAthletes = async (req, res, next) => {
 const getAllSports = async(req, res, next) => {
     try {
         // Traemos todos los elementos de la coleccion
-        const allSports = await Sport.find();
+        const allSports = await Sport.find().populate("athletes");
         // Find nos devuelve un array con todos los elementos coincidentes
         if(allSports.length > 0) {
             return res.status(200).json(allSports);

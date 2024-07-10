@@ -28,6 +28,8 @@ const createAthlete = async (req, res, next) =>{
     //en una constante
     //nos llega en el req.file que es un objeto, en la clave path
     let catchImg = req.file?.path;
+    console.log("req.body",req.body)
+
 
     //Actualizamos indexes
     try{
@@ -36,6 +38,7 @@ const createAthlete = async (req, res, next) =>{
         //a la creación del controlador no se modifique
         await Athlete.syncIndexes();
         const newAthlete = new Athlete(req.body);
+        
         //Comprobamos si hay imagen para añadirla al body
         if(catchImg) {
             newAthlete.image = catchImg;
@@ -68,7 +71,7 @@ const createAthlete = async (req, res, next) =>{
         req.file?.path && deleteImgCloudinary(catchImg);
         next(error);
 
-        return res.satus(409).json("Error en la creación del Athlete");
+        return res.status(409).json("Error en la creación del Athlete");
     }  
 };
 
@@ -80,7 +83,7 @@ const getAllAthletes = async (req, res, next) => {
     //Traemos todos los elementos con .find()
     //que nos devuelve un array con todos los elementos coincidentes
     try {
-        const allAthletes = await Athlete.find();
+        const allAthletes = await Athlete.find().populate("sports");
         //Si el array se ha llenado lanzamos respuesta correcta
         //y el array con todos los athletes    
         if(allAthletes.length >0) {
@@ -115,6 +118,7 @@ const toogleSport = async (req, res, next) => {
         if(athleteId) {
             //Cogemos lo traido por el body y lo convertimos en un array 
             //con split "," (metodo de js)
+            
             const arraySports = sports.split(",");
 
             //recorremos el arraySports(array de ids) 
@@ -172,7 +176,7 @@ const toogleSport = async (req, res, next) => {
                             } catch (error) {
                                 //Error Sport no actualizado
                                 return res.status(409).json({
-                                    error:"Error al actualizar la Sport, al añadirle el Athlete"
+                                    error:"Error al actualizar Sport, al añadirle el Athlete"
                                 });
                             };                                                 
                         } catch (error) {
@@ -247,7 +251,7 @@ const updateAthlete = async (req, res, next) => {
                 activo: req.body?.activo? req.body.activo: athleteById.activo,
                 
             };
-            console.log(bodyCustom);
+            console.log("body",bodyCustom);
 
             // comprobamos si recibimos por el body el genero
             if (req.body?.gender) {
@@ -261,7 +265,7 @@ const updateAthlete = async (req, res, next) => {
                 //Para ello usamos findByIdAndUpdate
                 try {
                     await Athlete.findByIdAndUpdate(id,bodyCustom);
-                    console.log(oldImg);
+                    console.log("oldImg",oldImg);
 
                     //si se ha actualizado la imagen borramos la antigua
                     //siempre que sea diferente a la por defecto

@@ -37,6 +37,6 @@ AthleteRouter.patch("/toogleSport/:id", toogleSport);
 AthleteRouter.get("/getById/:id", getByIdAthlete);
 AthleteRouter.get("/getByCountry/:country", getByCountry);
 AthleteRouter.patch("/toogleActivo/:idAthlete", addActivo);
-AthleteRouter.delete("/deleteAthlete/:id", [isAuth], deleteAthlete);
+AthleteRouter.delete("/deleteAthlete/:id", deleteAthlete);
 
 module.exports = AthleteRouter;
